@@ -1,6 +1,0 @@
-
-class AvatarUrl
-
-
-
-end
