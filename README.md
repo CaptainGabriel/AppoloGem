@@ -1,6 +1,6 @@
 # Appolo
 
-Ruby gem that provides quick and easy access to the web api of [Thoth WebApp](thoth.cc.e.ipl.pt/)
+Ruby gem that provides quick and easy access to the web api of [Thoth WebApp](https://thoth.cc.e.ipl.pt/)
 
 ## Installation
 
