@@ -14,4 +14,11 @@ describe Appolo do
     end
   end
 
+  describe '.get_students()' do
+      it 'should return an hash with all students as an array'  do
+          students = Appolo.get_students()
+          expect(students).to be_a_kind_of(Array)
+      end
+  end
+
 end
