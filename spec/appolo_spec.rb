@@ -12,6 +12,13 @@ describe Appolo do
             expect(student.github_username).to eq nil
         end
     end
+
+    context 'id dont exist' do
+        it 'should return nil' do
+            student = Appolo.get_student_by_id(0)
+            expect(student).to be_nil
+        end
+    end
   end
 
   describe '.get_students()' do
