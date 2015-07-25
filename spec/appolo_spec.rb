@@ -13,6 +13,7 @@ describe Appolo do
 
             expect(student.avatar_url).to be_a_kind_of(AvatarUrl)
             expect(student.links).to be_a_kind_of(Links)
+            expect(student.program).to be_a_kind_of(Program)
 
             expect(student.links.type).to eq 'https://adeetc.thothapp.com/api/v1/students'
         end
@@ -27,10 +28,18 @@ describe Appolo do
   end
 
   describe '.get_students()' do
-      it 'should return an hash with all students as an array'  do
+      it 'should return an array with all students'  do
           students = Appolo.get_students()
-          expect(students).to be_a_kind_of(Array)
+          expect(students).to be_a_kind_of(Hash)
+          expect(students.count).to be >0
       end
   end
 
+  #describe '.get_teachers()' do
+    #it 'should return an array with all the teachers' do
+    #  teachers = Appolo.get_teachers
+   #   expect(teachers).to be_a_kind_of(Array)
+  #    expect(teachers.count).to be >0
+ #   end
+#  end
 end

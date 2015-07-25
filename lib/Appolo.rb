@@ -6,12 +6,13 @@ require_relative '../lib/Appolo/Models/student'
 module Appolo
 
     private
-    $all_students = nil
+    $all_students = Hash.new
+
+    $all_teachers = nil
+
+    $TEACHERS_API_LINK = 'https://adeetc.thothapp.com/api/v1/teachers/'
     $STUDENTS_API_LINK = 'https://adeetc.thothapp.com/api/v1/students/'
 
-
-
-    public
 
     #Appends the id given to the api link and sends an HTTP GET request.
     #If successful, builds and returns a new Student object.
@@ -21,20 +22,41 @@ module Appolo
     #Example of link:
     #    https://adeetc.thothapp.com/api/v1/students/38209
     def self.get_student_by_id(id)
+        #$all_students[id] unless $all_students.nil? #needs to be tested
         begin
             response = RestClient.get $STUDENTS_API_LINK + id.to_s
+            nil unless response.code != 200
             Student.new(response.body)
         rescue => e
             nil
         end
-
     end
 
     #Returns an array of Student based upon the API link
     def self.get_students()
-        $all_students unless $all_students == nil
-        response = RestClient.get $STUDENTS_API_LINK
-        nil unless response == nil
-        $all_students = JSON.parse(response)['students']
+        $all_students unless $all_students.nil?
+        begin
+            response = RestClient.get $STUDENTS_API_LINK
+            nil unless response.code != 200
+            array_of_students_json = JSON.parse(response)['students']
+            array_of_students_json.each do |j_data|
+                stub = Student.new(j_data)
+                $all_students[stub.id] = stub
+            end
+            $all_students
+        rescue => e
+            nil
+        end
     end
+
+    #Returns an array of Teacher based upon the API link
+    #It saves the first request in order to answer next calls
+    #faster.
+    #def self.get_teachers()
+    #    $all_teachers unless $all_teachers.nil?
+    #    response = RestClient.get $TEACHERS_API_LINK
+    #    nil unless response.nil?
+    #    $all_teachers = JSON.parser(response)['teachers']
+    #end
+
 end
