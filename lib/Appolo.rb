@@ -1,14 +1,14 @@
 require 'Appolo/version'
 require 'rest-client'
 require_relative '../lib/Appolo/Models/student'
-
+require_relative '../lib/Appolo/Models/teacher'
 
 module Appolo
 
     private
     $all_students = Hash.new
 
-    $all_teachers = nil
+    $all_teachers = Hash.new
 
     $TEACHERS_API_LINK = 'https://adeetc.thothapp.com/api/v1/teachers/'
     $STUDENTS_API_LINK = 'https://adeetc.thothapp.com/api/v1/students/'
@@ -25,7 +25,7 @@ module Appolo
         #$all_students[id] unless $all_students.nil? #needs to be tested
         begin
             response = RestClient.get $STUDENTS_API_LINK + id.to_s
-            nil unless response.code != 200
+            nil unless response.code == 200
             Student.new(response.body)
         rescue => e
             nil
@@ -37,7 +37,7 @@ module Appolo
         $all_students unless $all_students.nil?
         begin
             response = RestClient.get $STUDENTS_API_LINK
-            nil unless response.code != 200
+            nil unless response.code == 200
             array_of_students_json = JSON.parse(response)['students']
             array_of_students_json.each do |j_data|
                 stub = Student.new(j_data)
@@ -52,11 +52,22 @@ module Appolo
     #Returns an array of Teacher based upon the API link
     #It saves the first request in order to answer next calls
     #faster.
-    #def self.get_teachers()
-    #    $all_teachers unless $all_teachers.nil?
-    #    response = RestClient.get $TEACHERS_API_LINK
-    #    nil unless response.nil?
-    #    $all_teachers = JSON.parser(response)['teachers']
-    #end
+    def self.get_teachers()
+        $all_teachers unless $all_teachers.nil?
+        begin
+            response = RestClient.get $TEACHERS_API_LINK
+            nil unless response.code == 200
+            puts response
+            teachers_temp = JSON.parser(response)
+            teachers_temp = teachers_temp['teachers']
+            teachers_temp.each do |teacher|
+                stub = Teacher.new(teacher)
+                $all_teachers[stub.id] = stub
+            end
+        rescue => e
+          nil
+        end
+
+    end
 
 end

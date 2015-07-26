@@ -6,10 +6,10 @@ require_relative 'program'
 
 class Student
 
-  $TYPE = 'students'
+  TYPE = 'students'
 
   attr_reader :id, :number, :short_name, :name, :academic_email, :github_username
-  attr_reader :avatar_url, :program, :links
+  attr_reader :avatar_url, :program, :links , :students
 
   def initialize(json_str)
 
@@ -18,6 +18,7 @@ class Student
       else
           json_data = JSON.parse json_str
       end
+
 
       @id = json_data[ModelUtils::ID]
       @number = json_data[ModelUtils::NUMBER]
@@ -29,7 +30,7 @@ class Student
       program_info = json_data[ModelUtils::PROGRAM]
       @program = Program.new(program_info, $TYPE) unless program_info.nil?
       @avatar_url = AvatarUrl.new(json_data[ModelUtils::AVATAR_URL])
-      @links = Links.new(json_data[ModelUtils::LINKS], $TYPE)
+      @links = Links.new(json_data[ModelUtils::LINKS], TYPE)
   end
 
   def to_s
