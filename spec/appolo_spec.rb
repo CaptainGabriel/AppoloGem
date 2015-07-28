@@ -37,7 +37,7 @@ describe Appolo do
 
   describe '.get_teachers()' do
     it 'should return an Hash (id,object) with all the teachers' do
-      teachers = Appolo.get_teachers
+      teachers = Appolo.get_teachers()
       expect(teachers).to be_a_kind_of(Hash)
       expect(teachers.count).to be >0
     end

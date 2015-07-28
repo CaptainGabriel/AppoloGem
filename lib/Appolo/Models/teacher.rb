@@ -1,3 +1,4 @@
+require 'json'
 class Teacher
 
   TYPE = 'teachers'
@@ -7,7 +8,7 @@ class Teacher
 
 
   def initialize(json_info)
-      if json_str.is_a? Hash
+      if json_info.is_a? Hash
         json_data = json_info
       else
         json_data = JSON.parse json_info
