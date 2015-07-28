@@ -8,13 +8,13 @@ module Appolo
 
     private
     $all_students = Hash.new
-
     $all_teachers = Hash.new
 
     TEACHERS_API_LINK = 'https://adeetc.thothapp.com/api/v1/teachers/'
     STUDENTS_API_LINK = 'https://adeetc.thothapp.com/api/v1/students/'
 
-
+    public
+    
     #Appends the id given to the api link and sends an HTTP GET request.
     #If successful, builds and returns a new Student object.
     #Otherwise returns nil.
@@ -50,7 +50,7 @@ module Appolo
         end
     end
 
-    #Returns an array of Teacher based upon the API link
+    #Returns an array of Teacher based upon the API link.
     #It saves the first request in order to answer next calls
     #faster.
     def self.get_teachers()
@@ -68,5 +68,7 @@ module Appolo
           nil
         end
     end
+
+
 
 end
