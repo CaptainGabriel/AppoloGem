@@ -14,7 +14,7 @@ module Appolo
     STUDENTS_API_LINK = 'https://adeetc.thothapp.com/api/v1/students/'
 
     public
-    
+
     #Appends the id given to the api link and sends an HTTP GET request.
     #If successful, builds and returns a new Student object.
     #Otherwise returns nil.
