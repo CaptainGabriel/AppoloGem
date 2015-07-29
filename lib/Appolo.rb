@@ -2,6 +2,7 @@ require 'Appolo/version'
 require 'rest-client'
 require_relative '../lib/Appolo/Models/student'
 require_relative '../lib/Appolo/Models/teacher'
+require_relative '../lib/Appolo/Models/classes'
 require 'json'
 
 module Appolo
@@ -9,9 +10,11 @@ module Appolo
     private
     $all_students = Hash.new
     $all_teachers = Hash.new
+    $all_classes = Hash.new
 
     TEACHERS_API_LINK = 'https://adeetc.thothapp.com/api/v1/teachers/'
     STUDENTS_API_LINK = 'https://adeetc.thothapp.com/api/v1/students/'
+    CLASSES_API_LINK = 'https://adeetc.thothapp.com/api/v1/classes/'
 
     public
 
@@ -63,12 +66,28 @@ module Appolo
                 stub = Teacher.new(teacher)
                 $all_teachers[stub.id] = stub
             end
-          $all_teachers
+            $all_teachers
         rescue => e
           nil
         end
     end
 
+
+    def self.get_classes
+        $all_classes unless $all_classes.nil?
+        begin
+            response = RestClient.get CLASSES_API_LINK
+            nil unless response.code == 200
+            teachers_temp = JSON.parse(response)['classes']
+            teachers_temp.each do |c|
+                stub = Classes.new c
+                $all_classes[stub.id] = stub
+            end
+            $all_classes
+        rescue => e
+          nil
+        end
+    end
 
 
 end

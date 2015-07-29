@@ -42,4 +42,12 @@ describe Appolo do
       expect(teachers.count).to be >0
     end
   end
+
+  describe '.get_classes()' do
+    it 'should return an Hash (id,object) with all the teachers' do
+      classes = Appolo.get_classes
+      expect(classes).to be_a_kind_of Hash
+      expect(classes.count).to be >0
+    end
+  end
 end
