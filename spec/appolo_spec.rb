@@ -25,6 +25,7 @@ describe Appolo do
             expect(student).to be_nil
         end
     end
+
   end
 
   describe '.get_students()' do
@@ -50,4 +51,13 @@ describe Appolo do
       expect(classes.count).to be >0
     end
   end
+
+  describe '.get_programs()' do
+    it 'should return an Hash (id,object) with all the programs' do
+      programs = Appolo.get_programs
+      expect(programs).to be_a_kind_of Hash
+      expect(programs.count).to be >0
+    end
+  end
+
 end
