@@ -20,7 +20,18 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+The following line of code
+
+```ruby
+puts Appolo::get_student_by_id 38209
+```
+
+will print the following info about a student with the id 38209:
+
+```
+Pedro Almeida - 38209
+```
+
 
 ## Development
 
