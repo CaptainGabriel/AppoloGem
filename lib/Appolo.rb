@@ -4,6 +4,7 @@ require_relative '../lib/Appolo/Models/student'
 require_relative '../lib/Appolo/Models/teacher'
 require_relative '../lib/Appolo/Models/classes'
 require_relative '../lib/Appolo/Models/program'
+require_relative '../lib/Appolo/Models/courses'
 require 'json'
 
 module Appolo
@@ -13,11 +14,13 @@ module Appolo
     $all_teachers = Hash.new
     $all_classes = Hash.new
     $all_programs = Hash.new
+    $all_courses = Hash.new
 
     TEACHERS_API_LINK = 'https://adeetc.thothapp.com/api/v1/teachers/'
     STUDENTS_API_LINK = 'https://adeetc.thothapp.com/api/v1/students/'
     CLASSES_API_LINK = 'https://adeetc.thothapp.com/api/v1/classes/'
     PROGRAMS_API_LINK = 'https://adeetc.thothapp.com/api/v1/programs'
+    COURSES_API_LINK = 'https://adeetc.thothapp.com/api/v1/courseunits'
 
     public
 
@@ -75,7 +78,6 @@ module Appolo
         end
     end
 
-
     def self.get_classes
         $all_classes unless $all_classes.nil?
         begin
@@ -108,6 +110,20 @@ module Appolo
         end
     end
 
-
+    def self.get_courses
+        $all_courses unless $all_courses.nil?
+        begin
+            response = RestClient.get COURSES_API_LINK
+            nil unless response.code == 200
+            programs_temp = JSON.parse(response)['courseUnits']
+            programs_temp.each do |c|
+                stub = CourseUnit.new c
+                $all_courses[stub.id] = stub
+            end
+            $all_courses
+        rescue => e
+            nil
+        end
+    end
 
 end

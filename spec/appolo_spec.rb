@@ -60,4 +60,12 @@ describe Appolo do
     end
   end
 
+  describe '.get_courses()' do
+    it 'should return an Hash (id,object) with all the courses' do
+      courses = Appolo.get_courses
+      expect(courses).to be_a_kind_of Hash
+      expect(courses.count).to be >0
+    end
+  end
+
 end
