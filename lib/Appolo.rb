@@ -84,8 +84,8 @@ module Appolo
             response = RestClient.get CLASSES_API_LINK
             nil unless response.code == 200
             teachers_temp = JSON.parse(response)['classes']
-            teachers_temp.each do |c|
-                stub = Classes.new c
+            teachers_temp.each do |classe|
+                stub = Classes.new classe
                 $all_classes[stub.id] = stub
             end
             $all_classes
@@ -100,8 +100,8 @@ module Appolo
             response = RestClient.get PROGRAMS_API_LINK
             nil unless response.code == 200
             programs_temp = JSON.parse(response)['programs']
-            programs_temp.each do |p|
-                stub = Program.new p, 'programs'
+            programs_temp.each do |program|
+                stub = Program.new program #retirar o type
                 $all_programs[stub.id] = stub
             end
             $all_programs
@@ -111,13 +111,13 @@ module Appolo
     end
 
     def self.get_courses
-        $all_courses unless $all_courses.nil?
+        $all_courses unless $all_courses.nil? #shouldnt be all_courses.count==0
         begin
             response = RestClient.get COURSES_API_LINK
             nil unless response.code == 200
             programs_temp = JSON.parse(response)['courseUnits']
-            programs_temp.each do |c|
-                stub = CourseUnit.new c
+            programs_temp.each do |course|
+                stub = CourseUnit.new course
                 $all_courses[stub.id] = stub
             end
             $all_courses
