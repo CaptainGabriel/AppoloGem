@@ -5,22 +5,32 @@ require_relative '../lib/Appolo/Models/teacher'
 require_relative '../lib/Appolo/Models/classes'
 require_relative '../lib/Appolo/Models/program'
 require_relative '../lib/Appolo/Models/courses'
+require_relative '../lib/Appolo/Models/lective_semester'
 require 'json'
 
 module Appolo
 
     private
+    COURSES_API_CODENAME = 'courseUnits'
+    TEACHERS_API_CODENAME = 'teachers'
+    STUDENTS_API_CODENAME = 'students'
+    CLASSES_API_CODENAME =  'classes'
+    PROGRAMS_API_CODENAME = 'programs'
+    LECTIVESEM_API_CODENAME = 'lectiveSemesters'
+
     $all_students = Hash.new
     $all_teachers = Hash.new
     $all_classes = Hash.new
     $all_programs = Hash.new
     $all_courses = Hash.new
+    $all_lective_sem = Hash.new
 
     TEACHERS_API_LINK = 'https://adeetc.thothapp.com/api/v1/teachers/'
     STUDENTS_API_LINK = 'https://adeetc.thothapp.com/api/v1/students/'
     CLASSES_API_LINK = 'https://adeetc.thothapp.com/api/v1/classes/'
-    PROGRAMS_API_LINK = 'https://adeetc.thothapp.com/api/v1/programs'
-    COURSES_API_LINK = 'https://adeetc.thothapp.com/api/v1/courseunits'
+    PROGRAMS_API_LINK = 'https://adeetc.thothapp.com/api/v1/programs/'
+    COURSES_API_LINK = 'https://adeetc.thothapp.com/api/v1/courseunits/'
+    LECTIVE_SEMESTERS_API_LINK = 'https://adeetc.thothapp.com/api/v1/lectivesemesters'
 
     public
 
@@ -48,9 +58,9 @@ module Appolo
         begin
             response = RestClient.get STUDENTS_API_LINK
             nil unless response.code == 200
-            array_of_students_json = JSON.parse(response)['students']
-            array_of_students_json.each do |j_data|
-                stub = Student.new(j_data)
+            students_temp = JSON.parse(response)[STUDENTS_API_CODENAME]
+            students_temp.each do |student|
+                stub = Student.new(student)
                 $all_students[stub.id] = stub
             end
             $all_students
@@ -67,7 +77,7 @@ module Appolo
         begin
             response = RestClient.get TEACHERS_API_LINK
             nil unless response.code == 200
-            teachers_temp = JSON.parse(response)['teachers']
+            teachers_temp = JSON.parse(response)[TEACHERS_API_CODENAME]
             teachers_temp.each do |teacher|
                 stub = Teacher.new(teacher)
                 $all_teachers[stub.id] = stub
@@ -83,7 +93,7 @@ module Appolo
         begin
             response = RestClient.get CLASSES_API_LINK
             nil unless response.code == 200
-            teachers_temp = JSON.parse(response)['classes']
+            teachers_temp = JSON.parse(response)[CLASSES_API_CODENAME]
             teachers_temp.each do |classe|
                 stub = Classes.new classe
                 $all_classes[stub.id] = stub
@@ -99,9 +109,9 @@ module Appolo
         begin
             response = RestClient.get PROGRAMS_API_LINK
             nil unless response.code == 200
-            programs_temp = JSON.parse(response)['programs']
+            programs_temp = JSON.parse(response)[PROGRAMS_API_CODENAME]
             programs_temp.each do |program|
-                stub = Program.new program #retirar o type
+                stub = Program.new program
                 $all_programs[stub.id] = stub
             end
             $all_programs
@@ -111,12 +121,12 @@ module Appolo
     end
 
     def self.get_courses
-        $all_courses unless $all_courses.nil? #shouldnt be all_courses.count==0
+        $all_courses unless $all_courses.count==0
         begin
             response = RestClient.get COURSES_API_LINK
             nil unless response.code == 200
-            programs_temp = JSON.parse(response)['courseUnits']
-            programs_temp.each do |course|
+            courses_temp = JSON.parse(response)[COURSES_API_CODENAME]
+            courses_temp.each do |course|
                 stub = CourseUnit.new course
                 $all_courses[stub.id] = stub
             end
@@ -126,4 +136,19 @@ module Appolo
         end
     end
 
+    def self.get_lective_semesters
+        $all_lective_sem unless $all_lective_sem.count == 0
+        begin
+            response = RestClient.get LECTIVE_SEMESTERS_API_LINK
+            nil unless response.code == 200
+            lective_temp = JSON.parse(response)[LECTIVESEM_API_CODENAME]
+            lective_temp.each do |lec_sem|
+                stub = LectiveSemester.new lec_sem
+                $all_lective_sem[stub.lective_semester_id] = stub
+            end
+            $all_lective_sem
+        rescue => e
+            nil
+        end
+    end
 end

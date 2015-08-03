@@ -68,4 +68,13 @@ describe Appolo do
     end
   end
 
+  describe '.get_lective_semesters()' do
+    it 'should return an Hash (id,object) with all the lective semesters' do
+      lective_sem = Appolo.get_lective_semesters
+      expect(lective_sem).to be_a_kind_of Hash
+      expect(lective_sem.count).to be >0
+    end
+  end
+
+
 end

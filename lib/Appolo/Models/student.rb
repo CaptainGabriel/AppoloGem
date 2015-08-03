@@ -28,7 +28,7 @@ class Student
       @github_username = json_data[ModelUtils::GITHUB_USERNAME]
 
       program_info = json_data[ModelUtils::PROGRAM]
-      @program = Program.new(program_info, $TYPE) unless program_info.nil?
+      @program = Program.new(program_info, TYPE) unless program_info.nil?
       @avatar_url = AvatarUrl.new(json_data[ModelUtils::AVATAR_URL])
       @links = Links.new(json_data[ModelUtils::LINKS], TYPE)
   end

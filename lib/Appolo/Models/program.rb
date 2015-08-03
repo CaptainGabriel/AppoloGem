@@ -7,10 +7,10 @@ class Program
 
     TYPE = 'programs'
 
-    def initialize(program_json_struct)#, links_tpe)
+    def initialize(program_json_struct, links_tpe=TYPE)
         @id = program_json_struct[ModelUtils::ID]
         @short_name = program_json_struct[ModelUtils::SHORT_NAME]
-        @links = Links.new(program_json_struct[ModelUtils::LINKS], TYPE)#links_tpe)
+        @links = Links.new(program_json_struct[ModelUtils::LINKS], links_tpe)
         @full_name = program_json_struct[ModelUtils::FULL_NAME]
     end
 
