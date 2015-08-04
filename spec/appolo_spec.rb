@@ -44,6 +44,27 @@ describe Appolo do
     end
   end
 
+  describe '.get_teacher_by_id(id)' do
+    context 'Valid id' do
+        it 'should return an object that contains the following data' do
+          teacher = Appolo.get_teacher_by_id 1
+          expect(teacher.id).to eq 1
+          expect(teacher.number).to eq 1647
+          expect(teacher.short_name).to eq 'Carlos Guedes'
+          expect(teacher.avatar_url).to be_a_kind_of(AvatarUrl)
+          expect(teacher.links).to be_a_kind_of(Links)
+          expect(teacher.links.type).to eq 'https://adeetc.thothapp.com/api/v1/teachers'
+        end
+    end
+
+    context 'Invalid id' do
+        it 'should return nil when the id is not valid' do
+          teacher = Appolo.get_teacher_by_id -1
+          expect(teacher).to be_nil
+        end
+    end
+  end
+
   describe '.get_classes()' do
     it 'should return an Hash (id,object) with all the teachers' do
       classes = Appolo.get_classes

@@ -1,5 +1,5 @@
-require_relative 'model_utils'
-require_relative 'links'
+require_relative '../../Models/model_utils'
+require_relative '../../Models/links'
 class Program
 
 

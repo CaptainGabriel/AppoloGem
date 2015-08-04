@@ -1,5 +1,5 @@
-require_relative 'model_utils'
-require_relative 'links'
+require_relative '../../Models/model_utils'
+require_relative '../../Models/links'
 
 class LectiveSemester
 
@@ -15,7 +15,7 @@ class LectiveSemester
       json_data = JSON.parse json_str
     end
 
-    @lective_semester_id = json_data[ModelUtils::LECTIVEID]
+    @lective_semester_id = json_data[ModelUtils::LECTIVE_ID]
     @short_name = json_data[ModelUtils::SHORT_NAME]
     @start_year = json_data[ModelUtils::START_YEAR]
     @term = json_data[ModelUtils::TERM]

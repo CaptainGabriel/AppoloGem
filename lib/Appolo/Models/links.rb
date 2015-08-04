@@ -11,8 +11,8 @@ class Links
     attr_reader :type
 
     def initialize(links, tpe)
-        @self = links[ModelUtils::SELF] unless links[ModelUtils::SELF].nil?
-        @root = links[ModelUtils::ROOT] unless links[ModelUtils::ROOT].nil?
-        @type = links[tpe] unless links[tpe].nil?
+        @self = links[ModelUtils::SELF] #unless links[ModelUtils::SELF].nil?
+        @root = links[ModelUtils::ROOT] #unless links[ModelUtils::ROOT].nil?
+        @type = links[tpe] #unless links[tpe].nil?
     end
 end

@@ -1,7 +1,7 @@
 require 'json'
-require_relative 'model_utils'
-require_relative 'links'
-require_relative 'avatar_url'
+require_relative '../../Models/model_utils'
+require_relative '../../Models/links'
+require_relative '../../Models/avatar_url'
 require_relative 'program'
 
 class Student

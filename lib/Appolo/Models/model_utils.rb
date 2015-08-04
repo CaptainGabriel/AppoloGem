@@ -24,7 +24,7 @@ module ModelUtils
   MAX_GROUP_SIZE = 'maxGroupSize'
   MAIN_TEACHER = 'mainTeacher'
 
-  LECTIVEID = 'lectiveSemesterId'
+  LECTIVE_ID = 'lectiveSemesterId'
   START_YEAR = 'startYear'
   TERM = 'term'
   TERM_NAME = 'termName'

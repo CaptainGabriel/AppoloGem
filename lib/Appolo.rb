@@ -1,11 +1,11 @@
 require 'Appolo/version'
 require 'rest-client'
-require_relative '../lib/Appolo/Models/student'
-require_relative '../lib/Appolo/Models/teacher'
-require_relative '../lib/Appolo/Models/classes'
-require_relative '../lib/Appolo/Models/program'
-require_relative '../lib/Appolo/Models/courses'
-require_relative '../lib/Appolo/Models/lective_semester'
+require_relative '../lib/Appolo/Models/main_model/student'
+require_relative '../lib/Appolo/Models/main_model/teacher'
+require_relative '../lib/Appolo/Models/main_model/classes'
+require_relative '../lib/Appolo/Models/main_model/program'
+require_relative '../lib/Appolo/Models/main_model/courses'
+require_relative '../lib/Appolo/Models/main_model/lective_semester'
 require 'json'
 
 module Appolo
@@ -42,7 +42,7 @@ module Appolo
     #Example of link:
     #    https://adeetc.thothapp.com/api/v1/students/38209
     def self.get_student_by_id(id)
-        $all_students[id] unless $all_students.nil?
+        $all_students[id] unless $all_students.count == 0
         begin
             response = RestClient.get STUDENTS_API_LINK + id.to_s
             nil unless response.code == 200
@@ -85,6 +85,17 @@ module Appolo
             $all_teachers
         rescue => e
           nil
+        end
+    end
+
+    def self.get_teacher_by_id(id)
+        $all_teachers[id] unless $all_teachers.count == 0
+        begin
+            response = RestClient.get TEACHERS_API_LINK + id.to_s
+            nil unless response.code == 200
+            Teacher.new response
+        rescue => e
+            nil
         end
     end
 
