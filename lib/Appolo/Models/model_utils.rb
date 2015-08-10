@@ -31,7 +31,7 @@ module ModelUtils
   START_YEAR = 'startYear'
   TERM = 'term'
   TERM_NAME = 'termName'
-
+  OTHER_TEACHERS = 'otherTeachers'
   PAGES = 'pages'
   PARTICIPANTS = 'participants'
   GROUPS = 'groups'

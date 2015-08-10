@@ -38,7 +38,8 @@ module Appolo
     def self.get_students
         verify_dict $all_students
         begin
-            verify_response RestClient.get STUDENTS_API_LINK
+            response = RestClient.get STUDENTS_API_LINK
+            verify_response response
             students_temp = JSON.parse(response)[STUDENTS_API_CODENAME]
             students_temp.each do |student|
                 stub = Student.new(student)
@@ -175,11 +176,11 @@ module Appolo
 
     private
 
-    def verify_response(resp)
+    def self.verify_response(resp)
         nil unless resp.code == 200
     end
 
-    def verify_dict(diction)
+    def self.verify_dict(diction)
         diction unless diction.count == 0
     end
 end

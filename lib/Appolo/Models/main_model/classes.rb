@@ -32,16 +32,13 @@ class Classes
       @main_teacher_id = json_data[ModelUtils::MAIN_TEACHER_ID]
       @max_group_size = json_data[ModelUtils::MAX_GROUP_SIZE]
 
-
-      teacher_self_link = json_data[ModelUtils::MAIN_TEACHER]
+      teacher_self_link = json_data[ModelUtils::LINKS]
+      teacher_self_link = teacher_self_link[ModelUtils::MAIN_TEACHER]
       unless teacher_self_link.nil?
-          teacher_self_link = teacher_self_link[ModelUtils::LINKS]
-          teacher_self_link = teacher_self_link[ModelUtils::SELF]
-          #TODO get the id and check if a request has been made in the past
-          teacher_self_response = RestClient.get teacher_self_link
-          @main_teacher = Teacher.new teacher_self_response
+        #TODO get the id and check if a request has been made in the past
+        teacher_self_response = RestClient.get teacher_self_link
+        @main_teacher = Teacher.new teacher_self_response
       end
-
 
       @links = Links.new(json_data[ModelUtils::LINKS], TYPE)
   end
