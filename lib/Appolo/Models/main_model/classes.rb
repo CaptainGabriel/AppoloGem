@@ -1,4 +1,5 @@
 require 'json'
+require 'RestClient'
 require_relative '../../Models/model_utils'
 require_relative '../../Models/links'
 require_relative '../../Models/avatar_url'
@@ -15,32 +16,34 @@ class Classes
 
 
   def initialize(json_info)
-    if json_info.is_a? Hash
-      json_data = json_info
-    else
-      json_data = JSON.parse json_info
-    end
+      if json_info.is_a? Hash
+        json_data = json_info
+      else
+        json_data = JSON.parse json_info
+      end
 
-    @id = json_data[ModelUtils::ID]
-    @full_name = json_data[ModelUtils::FULL_NAME]
-    @course_unit_short_name = json_data[ModelUtils::COURSE_UNIT_SHORT_NAME]
-    @class_name = json_data[ModelUtils::CLASS_NAME]
-    @main_teacher_short_name = json_data[ModelUtils::MAIN_TEACHER_SHORT_NAME]
-    @course_unit_id = json_data[ModelUtils::COURSE_UNIT_ID]
-    @lective_semester_id = json_data[ModelUtils::LECTIVE_SEMESTER_ID]
-    @main_teacher_id = json_data[ModelUtils::MAIN_TEACHER_ID]
-    @max_group_size = json_data[ModelUtils::MAX_GROUP_SIZE]
-
-
-    teacher_self_link = json_data[ModelUtils::MAIN_TEACHER]
-    unless teacher_self_link.nil?
-        teacher_self_link = teacher_self_link[ModelUtils::LINKS][ModelUtils::SELF]
-        @main_teacher = Teacher.new teacher_self_link
-    end
+      @id = json_data[ModelUtils::ID]
+      @full_name = json_data[ModelUtils::FULL_NAME]
+      @course_unit_short_name = json_data[ModelUtils::COURSE_UNIT_SHORT_NAME]
+      @class_name = json_data[ModelUtils::CLASS_NAME]
+      @main_teacher_short_name = json_data[ModelUtils::MAIN_TEACHER_SHORT_NAME]
+      @course_unit_id = json_data[ModelUtils::COURSE_UNIT_ID]
+      @lective_semester_id = json_data[ModelUtils::LECTIVE_SEMESTER_ID]
+      @main_teacher_id = json_data[ModelUtils::MAIN_TEACHER_ID]
+      @max_group_size = json_data[ModelUtils::MAX_GROUP_SIZE]
 
 
-    #@links = Links.new(json_data[ModelUtils::LINKS], TYPE)
+      teacher_self_link = json_data[ModelUtils::MAIN_TEACHER]
+      unless teacher_self_link.nil?
+          teacher_self_link = teacher_self_link[ModelUtils::LINKS]
+          teacher_self_link = teacher_self_link[ModelUtils::SELF]
+          #TODO get the id and check if a request has been made in the past
+          teacher_self_response = RestClient.get teacher_self_link
+          @main_teacher = Teacher.new teacher_self_response
+      end
 
+
+      @links = Links.new(json_data[ModelUtils::LINKS], TYPE)
   end
 
   def to_s

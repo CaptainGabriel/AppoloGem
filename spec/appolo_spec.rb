@@ -73,6 +73,22 @@ describe Appolo do
     end
   end
 
+  describe '.get_class_by_id(id)' do
+    context 'Valid id' do
+      class_temp = Appolo.get_class_by_id 431
+      expect(class_temp.id).to eq 431
+      expect(class_temp.full_name).to eq 'LSD / 1415v / LT11N'
+      expect(class_temp.course_unit_short_name).to eq "LSD"
+      expect(class_temp.class_name).to eq 'LT11N'
+      expect(class_temp.course_unit_id).to eq 22
+
+      expect(class_temp.links).to be_a_kind_of(Links)
+      expect(class_temp.main_teacher).to be_a_kind_of(Teacher)
+      expect(class_temp.other_teachers).to be_a_kind_of(Array)
+
+    end
+  end
+
   describe '.get_programs()' do
     it 'should return an Hash (id,object) with all the programs' do
       programs = Appolo.get_programs
