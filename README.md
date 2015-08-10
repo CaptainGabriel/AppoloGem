@@ -2,6 +2,8 @@
 
 Ruby gem that provides quick and easy access to the web api of [Thoth WebApp](https://adeetc.thothapp.com)
 
+This project does not intends to show any super efficient or professional programming features since it´s only purpose was for me to learn the language and at the same time to build a ruby gem.
+
 ## Installation
 
 Add this line to your application's Gemfile:
