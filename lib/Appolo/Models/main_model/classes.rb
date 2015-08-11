@@ -46,4 +46,14 @@ class Classes
   def to_s
     "#{@id} - #{@full_name} - #{@main_teacher_short_name}"
   end
+
+  def participants
+    response_all_participants = RestClient.get @links.participants
+    all_participants = JSON.parse response_all_participants
+    temp = []
+    all_participants['students'].each do |participant|
+      temp.push Student.new participant
+    end
+    temp
+  end
 end
