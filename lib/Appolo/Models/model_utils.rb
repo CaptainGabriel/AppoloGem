@@ -40,4 +40,13 @@ module ModelUtils
   WORK_ITEMS = 'workItems'
   RESOURCES = 'resources'
 
+  def self.check_json_info(json_info)
+    if json_info.is_a? Hash
+      json_data = json_info
+    else
+      json_data = JSON.parse json_info
+    end
+    json_data
+  end
+
 end

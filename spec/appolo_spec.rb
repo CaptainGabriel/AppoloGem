@@ -30,15 +30,15 @@ describe Appolo do
 
   describe '.get_students()' do
       it 'should return an Hash (id,object) with all students'  do
-          students = Appolo.get_students()
-          expect(students).to be_a_kind_of(Hash)
-          expect(students.count).to be >0
+          students = Appolo.get_students
+          expect(students).to be_a_kind_of Hash
+          expect(students.count).to be > 0
       end
   end
 
   describe '.get_teachers()' do
     it 'should return an Hash (id,object) with all the teachers' do
-      teachers = Appolo.get_teachers()
+      teachers = Appolo.get_teachers
       expect(teachers).to be_a_kind_of(Hash)
       expect(teachers.count).to be >0
     end
@@ -71,6 +71,7 @@ describe Appolo do
       expect(classes).to be_a_kind_of Hash
       expect(classes.count).to be >0
     end
+
   end
 
   describe '.get_class_by_id(id)' do

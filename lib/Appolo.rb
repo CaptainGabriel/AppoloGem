@@ -36,7 +36,7 @@ module Appolo
 
     #Returns an array of Student based upon the API link
     def self.get_students
-        verify_dict $all_students
+        return $all_students unless $all_students.length == 0
         begin
             response = RestClient.get STUDENTS_API_LINK
             verify_response response
@@ -55,7 +55,7 @@ module Appolo
     #It saves the first request in order to answer next calls
     #faster.
     def self.get_teachers
-        verify_dict $all_teachers
+        return $all_teachers unless $all_teachers.length == 0
         begin
             response = RestClient.get TEACHERS_API_LINK
             verify_response response
@@ -71,7 +71,7 @@ module Appolo
     end
 
     def self.get_programs
-        verify_dict $all_programs
+        return $all_programs unless $all_programs.length == 0
         begin
             response = RestClient.get PROGRAMS_API_LINK
             verify_response response
@@ -87,23 +87,23 @@ module Appolo
     end
 
     def self.get_courses
-        verify_dict $all_courses
-        begin
-            response = RestClient.get COURSES_API_LINK
-            verify_response response
-            courses_temp = JSON.parse(response)[COURSES_API_CODENAME]
-            courses_temp.each do |course|
-                stub = CourseUnit.new course
-                $all_courses[stub.id] = stub
-            end
-            $all_courses
-        rescue => e
-            nil
+      return $all_courses unless $all_courses.length == 0
+      begin
+        response = RestClient.get COURSES_API_LINK
+        verify_response response
+        courses_temp = JSON.parse(response)[COURSES_API_CODENAME]
+        courses_temp.each do |course|
+          stub = CourseUnit.new course
+          $all_courses[stub.id] = stub
         end
+        $all_courses
+      rescue => e
+        nil
+      end
     end
 
     def self.get_lective_semesters
-        verify_dict $all_lective_sem
+       return $all_lective_sem unless $all_lective_sem.length == 0
         begin
             response = RestClient.get LECTIVE_SEMESTERS_API_LINK
             verify_response response
@@ -119,19 +119,19 @@ module Appolo
     end
 
     def self.get_classes
-        verify_dict $all_classes
-        begin
-            response = RestClient.get CLASSES_API_LINK
-            verify_response response
-            classes_temp = JSON.parse(response)[CLASSES_API_CODENAME]
-            classes_temp.each do |classe|
-                stub = Classes.new classe
-                $all_classes[stub.id] = stub
-            end
-            $all_classes
+      return $all_classes unless $all_classes.length == 0
+      begin
+        response = RestClient.get CLASSES_API_LINK
+        verify_response response
+        classes_temp = JSON.parse(response)[CLASSES_API_CODENAME]
+        classes_temp.each do |classe|
+          stub = Classes.new classe
+          $all_classes[stub.id] = stub
+        end
+          $all_classes
         rescue => e
           nil
-        end
+      end
     end
 
     def self.get_teacher_by_id(id)
@@ -146,7 +146,7 @@ module Appolo
     end
 
     def self.get_class_by_id(id)
-        $all_classes[id] unless $all_classes.count == 0
+        return $all_classes[id] unless $all_classes.count == 0
         begin
             response = RestClient.get CLASSES_API_LINK + id.to_s
             verify_response response
@@ -164,7 +164,7 @@ module Appolo
     #Example of link:
     #    https://adeetc.thothapp.com/api/v1/students/38209
     def self.get_student_by_id(id)
-        $all_students[id] unless $all_students.count == 0
+        return $all_students[id] unless $all_students.count == 0
         begin
             response = RestClient.get STUDENTS_API_LINK + id.to_s
             verify_response response
@@ -180,7 +180,4 @@ module Appolo
         nil unless resp.code == 200
     end
 
-    def self.verify_dict(diction)
-        diction unless diction.count == 0
-    end
 end
