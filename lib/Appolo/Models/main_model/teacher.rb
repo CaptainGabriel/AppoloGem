@@ -1,4 +1,6 @@
 require 'json'
+require_relative '../../Models/links'
+
 class Teacher
 
   TYPE = 'teachers'
@@ -19,9 +21,9 @@ class Teacher
       @short_name = json_data[ModelUtils::SHORT_NAME]
       @name = json_data[ModelUtils::NAME]
       @academic_email = json_data[ModelUtils::ACADEMIC_EMAIL]
-
-      @avatar_url = AvatarUrl.new(json_data[ModelUtils::AVATAR_URL])
       @links = Links.new(json_data[ModelUtils::LINKS], TYPE)
+      @avatar_url = AvatarUrl.new(json_data[ModelUtils::AVATAR_URL])
+
   end
 
 

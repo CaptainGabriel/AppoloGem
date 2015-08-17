@@ -58,11 +58,11 @@ module Appolo
         return $all_teachers unless $all_teachers.length == 0
         begin
             response = RestClient.get TEACHERS_API_LINK
-            verify_response response
-            teachers_temp = JSON.parse(response)[TEACHERS_API_CODENAME]
+            valid_response = verify_response response
+            teachers_temp = JSON.parse(valid_response)[TEACHERS_API_CODENAME]
             teachers_temp.each do |teacher|
-                stub = Teacher.new(teacher)
-                $all_teachers[stub.id] = stub
+              stub = Teacher.new(teacher)
+              $all_teachers[stub.id] = stub
             end
             $all_teachers
         rescue => e
@@ -135,25 +135,23 @@ module Appolo
     end
 
     def self.get_teacher_by_id(id)
-        $all_teachers[id] unless $all_teachers.count == 0
-        begin
-            response = RestClient.get TEACHERS_API_LINK + id.to_s
-            verify_response response
-            Teacher.new response
-        rescue => e
-            nil
-        end
+      #always makes a request in order to obtain more information about the Teacher
+      #object inside the dictionary do not contain much info, just the basics
+      begin
+        response = RestClient.get TEACHERS_API_LINK + id.to_s
+        Teacher.new (verify_response response)
+      rescue => e
+        nil
+      end
     end
 
     def self.get_class_by_id(id)
-        return $all_classes[id] unless $all_classes.count == 0
-        begin
-            response = RestClient.get CLASSES_API_LINK + id.to_s
-            verify_response response
-            Classes.new response
-        rescue => e
-            nil
-        end
+      begin
+        response = RestClient.get CLASSES_API_LINK + id.to_s
+        Classes.new (verify_response response)
+      rescue => e
+        nil
+      end
     end
 
     #Appends the id given to the api link and sends an HTTP GET request.
@@ -167,8 +165,8 @@ module Appolo
         return $all_students[id] unless $all_students.count == 0
         begin
             response = RestClient.get STUDENTS_API_LINK + id.to_s
-            verify_response response
-            Student.new(response.body)
+            valid_response = verify_response response
+            Student.new valid_response
         rescue => e
             nil
         end
@@ -177,7 +175,11 @@ module Appolo
     private
 
     def self.verify_response(resp)
-        nil unless resp.code == 200
+      if resp.code == 200
+        resp
+      else
+        nil
+      end
     end
 
 end
