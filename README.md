@@ -36,6 +36,25 @@ will print the following info about a student with the id 38209:
 Pedro Almeida - 38209
 ```
 
+You can also get an instance related to the class with id 409 and
+afterwards all the lectures that were given there like this:
+
+```ruby
+some_class = Appolo.get_class_by_id 409
+all_lectures_now = some_class.lectures
+
+puts all_lectures[0].title
+puts all_lectures[1].title
+puts all_lectures[2].title
+```
+
+will print something like this
+
+```
+Aula 01 Introdução às  VMs processo e comparação .Net vs JVM
+Aula 02 Distribuição e ligação de componetes em ambiente Unmanaged
+Aula 03 Características da distribuição e ligação de componentes Managed
+```
 
 ## Development
 
