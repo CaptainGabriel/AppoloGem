@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["pedrogabriel@protonmail.ch"]
 
   spec.summary       = %q{Provides easy access to Thoth web API}
-  #spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.description   = %q{Ruby gem that provides quick and easy access to the web api of Thoth WebApp}
   spec.homepage      = "https://github.com/CaptainGabriel/AppoloGem"
   spec.license       = "MIT"
 
@@ -33,5 +33,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "rest-client"
   spec.add_development_dependency "json"
+
 
 end
