@@ -8,9 +8,9 @@ class Links
 
 
     def initialize(links, tpe)
-        @self = links[ModelUtils::SELF] #unless links[ModelUtils::SELF].nil?
-        @root = links[ModelUtils::ROOT] #unless links[ModelUtils::ROOT].nil?
-        @type = links[tpe] #unless links[tpe].nil?
+        @self = links[ModelUtils::SELF]
+        @root = links[ModelUtils::ROOT]
+        @type = links[tpe]
 
         @main_teacher = links[ModelUtils::MAIN_TEACHER]
         @course_unit = links[ModelUtils::COURSE_UNIT]

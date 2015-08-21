@@ -19,6 +19,7 @@ module ModelUtils
   LECTIVE_SEMESTER = 'lectiveSemester'
   CLASS_NAME = 'className'
   CLASSES = 'classes'
+  CLASS_ID = 'classId'
   MAIN_TEACHER_SHORT_NAME = 'mainTeacherShortName'
   COURSE_UNIT_ID = 'courseUnitId'
   COURSE_UNIT = 'courseUnit'
@@ -39,6 +40,12 @@ module ModelUtils
   NEWS_ITEMS = 'newsItems'
   WORK_ITEMS = 'workItems'
   RESOURCES = 'resources'
+
+  CONTENT = 'content'
+  DATE_CREATED = 'dateCreated'
+  CREATED_WHEN = 'when'
+  TITLE = 'title'
+  DESCRIPTION = 'description'
 
   def self.check_json_info(json_info)
     if json_info.is_a? Hash

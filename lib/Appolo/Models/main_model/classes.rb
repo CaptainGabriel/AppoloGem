@@ -3,6 +3,8 @@ require 'rest-client'
 require_relative '../../Models/model_utils'
 require_relative '../../Models/links'
 require_relative '../../Models/avatar_url'
+require_relative '../../Models/lecture'
+require_relative '../../Models/resource'
 require_relative 'program'
 
 class Classes
@@ -13,7 +15,9 @@ class Classes
   attr_reader :course_unit_id, :lective_semester_id, :main_teacher_id, :max_group_size
   attr_reader :main_teacher, :links
 
-
+  ##
+  # Initiate an instance of Classes based upon +json_info*
+  # that can be an hash or a JSON string.
   def initialize(json_info)
     json_data = ModelUtils::check_json_info json_info
 
@@ -38,10 +42,14 @@ class Classes
     @links = Links.new(json_data[ModelUtils::LINKS], TYPE)
   end
 
+  ##
+  # Small representation of the Classes object
   def to_s
     "#{@id} - #{@full_name} - #{@main_teacher_short_name}"
   end
 
+  ##
+  # Returns all the students related to this class.
   def participants
     response_all_participants = RestClient.get @links.participants
     all_participants = JSON.parse response_all_participants
@@ -51,4 +59,29 @@ class Classes
     end
     temp
   end
+
+  ##
+  # Returns all the lectures related to this class.
+  def lectures
+    response_all_lectures = RestClient.get @links.lectures
+    all_lectures = JSON.parse response_all_lectures
+    temp = []
+    all_lectures['classLectures'].each do |lecture|
+      temp.push Lecture.new lecture
+    end
+    temp
+  end
+
+  ##
+  # Returns all the resources related to a certain class.
+  def resources
+    response_all_resources = RestClient.get @links.resources
+    all_resources = JSON.parse response_all_resources
+    temp = []
+    all_resources['classResources'].each do |resource|
+      temp.push Resource.new resource
+    end
+    temp
+  end
+
 end
