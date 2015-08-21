@@ -6,6 +6,7 @@ require_relative '../lib/Appolo/Models/main_model/classes'
 require_relative '../lib/Appolo/Models/main_model/program'
 require_relative '../lib/Appolo/Models/main_model/courses'
 require_relative '../lib/Appolo/Models/main_model/lective_semester'
+require_relative '../lib/Appolo/Models/lecture'
 require 'json'
 
 ##
@@ -38,15 +39,21 @@ module Appolo
   COURSES_API_LINK = 'https://adeetc.thothapp.com/api/v1/courseunits/'
   LECTIVE_SEMESTERS_API_LINK = 'https://adeetc.thothapp.com/api/v1/lectivesemesters'
 
-  #some functions to perform some repeating tasks
-
+  
   def self.verify_response(resp)
     (resp.code == 200) ? resp : nil
   end
 
+  def self.check_json_info(json_str)
+    unless json_str.is_a? Hash
+      JSON.parse json_str
+    else
+      json_str
+    end
+  end
+
   public
 
-  
   ##
   #Returns an array of Student instances based upon the main API link.
   
