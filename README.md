@@ -1,6 +1,5 @@
-[![Code Climate](https://codeclimate.com/github/CaptainGabriel/AppoloGem/badges/gpa.svg)](https://codeclimate.com/github/CaptainGabriel/AppoloGem)
-
 # Appolo
+[![Code Climate](https://codeclimate.com/github/CaptainGabriel/AppoloGem/badges/gpa.svg)](https://codeclimate.com/github/CaptainGabriel/AppoloGem)
 
 Ruby gem that provides quick and easy access to the web api of [Thoth WebApp](https://adeetc.thothapp.com)
 
@@ -44,16 +43,29 @@ some_class = Appolo.get_class_by_id 409
 all_lectures_now = some_class.lectures
 
 puts all_lectures[0].title
+# Aula 01 Introdução às  VMs processo e comparação .Net vs JVM
 puts all_lectures[1].title
+# Aula 02 Distribuição e ligação de componetes em ambiente Unmanaged
 puts all_lectures[2].title
+# Aula 03 Características da distribuição e ligação de componentes Managed
 ```
 
-will print something like this
+To get all the students participating in a certain class:
 
+```ruby
+some_class = Appolo.get_class_by_id 409
+participants = some_class.participants
+
+puts participants[0].name
+# Humberto Pedro Pinto da Silva
 ```
-Aula 01 Introdução às  VMs processo e comparação .Net vs JVM
-Aula 02 Distribuição e ligação de componetes em ambiente Unmanaged
-Aula 03 Características da distribuição e ligação de componentes Managed
+
+For more information, just grab the id and get the specific student
+```ruby
+id = participants[0].id
+student = Appolo.get_student_by_id id
+puts student.short_name
+# Humberto Silva
 ```
 
 ## Development
