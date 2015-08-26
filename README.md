@@ -1,5 +1,6 @@
 # Appolo
 [![Code Climate](https://codeclimate.com/github/CaptainGabriel/AppoloGem/badges/gpa.svg)](https://codeclimate.com/github/CaptainGabriel/AppoloGem)
+[![Gem Version](https://badge.fury.io/rb/appolo.svg)](http://badge.fury.io/rb/appolo)
 
 Ruby gem that provides quick and easy access to the web api of [Thoth WebApp](https://adeetc.thothapp.com)
 
