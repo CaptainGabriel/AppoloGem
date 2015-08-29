@@ -1,5 +1,5 @@
 require_relative 'links'
-require_relative 'model_utils'
+require_relative '../model_utils'
 
 class Resource
 

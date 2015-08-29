@@ -81,7 +81,7 @@ describe Appolo do
         expect(class_temp.id).to eq 387
         expect(class_temp.full_name).to eq 'AED / 1415v / LI31N'
         expect(class_temp.course_unit_short_name).to eq 'AED'
-        expect(class_temp.class_name).to eq 'LI31N'
+        expect(class_temp.short_name).to eq 'LI31N'
         expect(class_temp.course_unit_id).to eq 38
 
         expect(class_temp.links).to be_a_kind_of(Links)

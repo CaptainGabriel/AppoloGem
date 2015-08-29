@@ -1,20 +1,21 @@
-require_relative '../../Models/model_utils'
-require_relative '../../Models/links'
-class Program
+require_relative '../element'
+require_relative '../model_utils'
 
+class Program < Element
 
-    attr_reader :id, :short_name, :links, :full_name
+  attr_reader :full_name
 
-    TYPE = 'programs'
+  @@type_for_links = 'programs'
 
-    def initialize(program_json_struct, links_tpe=TYPE)
-        @id = program_json_struct[ModelUtils::ID]
-        @short_name = program_json_struct[ModelUtils::SHORT_NAME]
-        @links = Links.new(program_json_struct[ModelUtils::LINKS], links_tpe)
-        @full_name = program_json_struct[ModelUtils::FULL_NAME]
-    end
+  def initialize(data)
+    super(data[ModelUtils::ID],
+          data[ModelUtils::SHORT_NAME],
+          data[ModelUtils::LINKS],
+          @@type_for_links)
+    @full_name = data[ModelUtils::FULL_NAME]
+  end
 
-    def to_s
-        "#{@id} -  #{@full_name}"
-    end
+  def to_s
+    "#{@id} - #{@full_name}"
+  end
 end

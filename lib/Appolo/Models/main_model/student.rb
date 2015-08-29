@@ -1,34 +1,37 @@
 require 'json'
-require_relative '../../Models/model_utils'
-require_relative '../../Models/links'
-require_relative '../../Models/avatar_url'
+require_relative '../model_utils'
+require_relative '../secondary/links'
+require_relative '../secondary/avatar_url'
 require_relative 'program'
+require_relative '../element'
 
-class Student
+class Student < Element
 
-  TYPE = 'students'
+  @@type_for_links = 'students'
 
-  attr_reader :id, :number, :short_name, :name, :academic_email, :github_username
-  attr_reader :avatar_url, :program, :links , :students
+  attr_reader :number, :name, :academic_email, :github_username
+  attr_reader :avatar_url, :program, :students
 
   def initialize(json_str)
     json_data = Appolo.check_json_info json_str
 
-    @id = json_data[ModelUtils::ID]
+    super(json_data[ModelUtils::ID],
+          json_data[ModelUtils::SHORT_NAME],
+          json_data[ModelUtils::LINKS],
+          @@type_for_links)
+
     @number = json_data[ModelUtils::NUMBER]
-    @short_name = json_data[ModelUtils::SHORT_NAME]
     @name = json_data[ModelUtils::NAME] || json_data[ModelUtils::FULL_NAME]
     @academic_email = json_data[ModelUtils::ACADEMIC_EMAIL]
     @github_username = json_data[ModelUtils::GITHUB_USERNAME]
 
     program_info = json_data[ModelUtils::PROGRAM]
-    @program = Program.new(program_info, TYPE) unless program_info.nil?
+    @program = Program.new(program_info) unless program_info.nil?
     @avatar_url = AvatarUrl.new(json_data[ModelUtils::AVATAR_URL])
-    @links = Links.new(json_data[ModelUtils::LINKS], TYPE)
   end
 
   def to_s
-    "#{@short_name} - Number #{@number.to_s}"
+    "#{@id} : Number #{@number.to_s} - #{@short_name}"
   end
 
 end

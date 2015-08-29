@@ -6,7 +6,7 @@ require_relative '../lib/Appolo/Models/main_model/classes'
 require_relative '../lib/Appolo/Models/main_model/program'
 require_relative '../lib/Appolo/Models/main_model/courses'
 require_relative '../lib/Appolo/Models/main_model/lective_semester'
-require_relative '../lib/Appolo/Models/lecture'
+
 require 'json'
 
 ##
@@ -145,7 +145,7 @@ module Appolo
       lective_temp = JSON.parse(valid_resp)[LECTIVESEM_API_CODENAME]
       lective_temp.each do |lec_sem|
         stub = LectiveSemester.new lec_sem
-        $all_lective_sem[stub.lective_semester_id] = stub
+        $all_lective_sem[stub.id] = stub
       end
       $all_lective_sem
     rescue => e
@@ -205,7 +205,8 @@ module Appolo
     return $all_students[id] unless $all_students.count == 0
     begin
       response = RestClient.get STUDENTS_API_LINK + id.to_s
-      Student.new (verify_response response)
+      response = verify_response response
+      Student.new response
     rescue => e
       nil
     end

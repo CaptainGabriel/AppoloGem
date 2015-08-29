@@ -1,29 +1,26 @@
-require_relative '../../Models/model_utils'
-require_relative '../../Models/links'
+require_relative '../model_utils'
+require_relative '../secondary/links'
+require_relative '../element'
 
-class LectiveSemester
+class LectiveSemester < Element
 
-  attr_reader :lective_semester_id, :short_name, :start_year, :term, :term_name
-  attr_reader :links
+  attr_reader :start_year, :term, :term_name
 
-  TYPE = 'lectiveSemesters'
+  @@type_of_links = 'lectiveSemesters'
 
   def initialize(json_str)
-    if json_str.is_a? Hash
-      json_data = json_str
-    else
-      json_data = JSON.parse json_str
-    end
+    json_data = ModelUtils.check_json_info json_str
 
-    @lective_semester_id = json_data[ModelUtils::LECTIVE_ID]
-    @short_name = json_data[ModelUtils::SHORT_NAME]
+    super(json_data[ModelUtils::LECTIVE_ID],
+          json_data[ModelUtils::SHORT_NAME],
+          json_data[ModelUtils::LINKS],
+          @@type_of_links)
     @start_year = json_data[ModelUtils::START_YEAR]
     @term = json_data[ModelUtils::TERM]
     @term_name = json_data[ModelUtils::TERM_NAME]
-    @links = Links.new json_data[ModelUtils::LINKS], TYPE
   end
 
   def to_s
-    "#{@lective_semester_id} - #{@short_name} : #{@term_name} #{@start_year}"
+    "#{@id} - #{@short_name} : #{@term_name} #{@start_year}"
   end
 end

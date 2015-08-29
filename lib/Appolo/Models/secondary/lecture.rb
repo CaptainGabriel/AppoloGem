@@ -1,4 +1,4 @@
-require_relative '../../../lib/Appolo/Models/model_utils'
+require_relative '../model_utils'
 require 'json'
 require 'rest-client'
 
