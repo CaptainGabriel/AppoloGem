@@ -7,9 +7,7 @@ describe Appolo do
     context 'id equals to 38209' do
         it 'should return an object that contains the following data' do
             student = Appolo.get_student_by_id(38209)
-            expect(student.id).to eq 38209
-            expect(student.number).to eq 38209
-            expect(student.github_username).to eq nil
+            expect(student).to have_attributes id: 38209, number: 38209, github_username: nil
 
             expect(student.avatar_url).to be_a_kind_of(AvatarUrl)
             expect(student.links).to be_a_kind_of(Links)
@@ -48,9 +46,8 @@ describe Appolo do
     context 'Valid id' do
         it 'should return an object that contains the following data' do
           teacher = Appolo.get_teacher_by_id 1
-          expect(teacher.id).to eq 1
-          expect(teacher.number).to eq 1647
-          expect(teacher.short_name).to eq 'Carlos Guedes'
+          expect(teacher).to have_attributes id: 1, number: 1647, short_name: 'Carlos Guedes'
+
           expect(teacher.avatar_url).to be_a_kind_of(AvatarUrl)
           expect(teacher.links).to be_a_kind_of(Links)
           expect(teacher.links.type).to eq 'https://adeetc.thothapp.com/api/v1/teachers'
@@ -78,14 +75,18 @@ describe Appolo do
     context 'Valid id' do
       it 'must return a class object like this' do
         class_temp = Appolo.get_class_by_id 387
-        expect(class_temp.id).to eq 387
-        expect(class_temp.full_name).to eq 'AED / 1415v / LI31N'
-        expect(class_temp.course_unit_short_name).to eq 'AED'
-        expect(class_temp.short_name).to eq 'LI31N'
-        expect(class_temp.course_unit_id).to eq 38
+        expect(class_temp).to have_attributes id: 387, full_name: 'AED / 1415v / LI31N', course_unit_short_name: 'AED'
+        expect(class_temp).to have_attributes short_name: 'LI31N', course_unit_id: 38
 
         expect(class_temp.links).to be_a_kind_of(Links)
         expect(class_temp.main_teacher).to be_a_kind_of(Teacher)
+      end
+    end
+
+    context 'Invalid ID' do
+      it 'must return nil when the id is not valid' do
+        class_temp = Appolo.get_class_by_id 1010
+        expect(class_temp).to be_nil
       end
     end
   end
