@@ -39,7 +39,7 @@ module Appolo
   COURSES_API_LINK = 'https://adeetc.thothapp.com/api/v1/courseunits/'
   LECTIVE_SEMESTERS_API_LINK = 'https://adeetc.thothapp.com/api/v1/lectivesemesters'
 
-  
+  #TODO should raise exception when not 200
   def self.verify_response(resp)
     (resp.code == 200) ? resp : nil
   end
@@ -177,9 +177,10 @@ module Appolo
   # Return a single instance of Teacher based upon the +id+ given.
 
   def self.get_teacher_by_id(id)
+    return $all_teachers[id] unless $all_teachers.count == 0
     begin
       response = RestClient.get TEACHERS_API_LINK + id.to_s
-      Teacher.new (verify_response response)
+      Teacher.new(verify_response response)
     rescue => e
       nil
     end
@@ -190,9 +191,10 @@ module Appolo
   # Return a single instance of Classes based upon the +id+ given.
 
   def self.get_class_by_id(id)
+    return $all_classes[id] unless $all_classes.count == 0
     begin
       response = RestClient.get CLASSES_API_LINK + id.to_s
-      Classes.new (verify_response response)
+      Classes.new(verify_response response)
     rescue => e
       nil
     end
@@ -205,13 +207,20 @@ module Appolo
     return $all_students[id] unless $all_students.count == 0
     begin
       response = RestClient.get STUDENTS_API_LINK + id.to_s
-      response = verify_response response
-      Student.new response
+      Student.new(verify_response response)
     rescue => e
       nil
     end
   end
 
-    
+  def self.get_program_by_id(id)
+    return $all_programs[id] unless $all_programs.count == 0
+    begin
+      response = RestClient.get PROGRAMS_API_LINK + id.to_s
+      Program.new(verify_response response)
+    rescue => e
+      nil
+    end
+  end
 
 end

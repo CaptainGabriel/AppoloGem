@@ -22,7 +22,7 @@ module ModelUtils
   CLASS_ID = 'classId'
   MAIN_TEACHER_SHORT_NAME = 'mainTeacherShortName'
   COURSE_UNIT_ID = 'courseUnitId'
-  COURSE_UNIT = 'courseUnit'
+  COURSE_UNIT = 'courseUnits'
   LECTIVE_SEMESTER_ID = 'lectiveSemesterId'
   MAIN_TEACHER_ID = 'mainTeacherId'
   MAX_GROUP_SIZE = 'maxGroupSize'

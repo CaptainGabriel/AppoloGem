@@ -6,7 +6,7 @@ describe Appolo do
   describe '.get_student_by_id(id)' do
     context 'id equals to 38209' do
         it 'should return an object that contains the following data' do
-            student = Appolo.get_student_by_id(38209)
+            student = Appolo.get_student_by_id 38209
             expect(student).to have_attributes id: 38209, number: 38209, github_username: nil
 
             expect(student.avatar_url).to be_a_kind_of(AvatarUrl)
@@ -73,8 +73,8 @@ describe Appolo do
 
   describe '.get_class_by_id(id)' do
     context 'Valid id' do
-      it 'must return a class object like this' do
-        class_temp = Appolo.get_class_by_id 387
+      it 'must return an object like this' do
+        class_temp = Appolo.get_class_by_id '387'
         expect(class_temp).to have_attributes id: 387, full_name: 'AED / 1415v / LI31N', course_unit_short_name: 'AED'
         expect(class_temp).to have_attributes short_name: 'LI31N', course_unit_id: 38
 
@@ -98,6 +98,16 @@ describe Appolo do
       expect(programs.count).to be >0
     end
   end
+
+  describe '.get_program_by_id(id)' do
+    it 'should return an object like this' do
+      single_program = Appolo.get_program_by_id 1
+      expect(single_program).to have_attributes id: 1, short_name: 'LEIC'
+      expect(single_program.links).to be_a_kind_of(Links)
+      expect(single_program.course_units).to be_a_kind_of(Array)
+    end
+  end
+
 
   describe '.get_courses()' do
     it 'should return an Hash (id,object) with all the courses' do
