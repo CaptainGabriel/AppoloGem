@@ -11,7 +11,9 @@ This project does not intends to show any super efficient or professional progra
 Add this line to your application's Gemfile:
 
 ```ruby
+
 gem 'Appolo'
+
 ```
 
 And then execute:
@@ -27,19 +29,24 @@ Or install it yourself as:
 The following line of code
 
 ```ruby
+
 puts Appolo::get_student_by_id 38209
+
 ```
 
 will print the following info about a student with the id 38209:
 
 ```
+
 Pedro Almeida - 38209
+
 ```
 
 You can also get an instance related to the class with id 409 and
 afterwards all the lectures that were given there like this:
 
 ```ruby
+
 some_class = Appolo.get_class_by_id 409
 all_lectures_now = some_class.lectures
 
@@ -49,24 +56,30 @@ puts all_lectures[1].title
 # Aula 02 Distribuição e ligação de componetes em ambiente Unmanaged
 puts all_lectures[2].title
 # Aula 03 Características da distribuição e ligação de componentes Managed
+
 ```
 
 To get all the students participating in a certain class:
 
 ```ruby
+
 some_class = Appolo.get_class_by_id 409
 participants = some_class.participants
 
 puts participants[0].name
-# Humberto Pedro Pinto da Silva
+#Humberto Pedro Pinto da Silva
+
 ```
 
 For more information, just grab the id and get the specific student
+
 ```ruby
+
 id = participants[0].id
 student = Appolo.get_student_by_id id
 puts student.short_name
 # Humberto Silva
+
 ```
 
 ## Development
