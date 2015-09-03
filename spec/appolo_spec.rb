@@ -13,14 +13,15 @@ describe Appolo do
             expect(student.links).to be_a_kind_of(Links)
             expect(student.program).to be_a_kind_of(Program)
 
-            expect(student.links.type).to eq 'https://adeetc.thothapp.com/api/v1/students'
+            expect(student.links.type).to eql 'https://adeetc.thothapp.com/api/v1/students'
         end
     end
 
     context 'id that does not exist' do
-        it 'should return nil' do
+        it 'should return an empty instance' do
             student = Appolo.get_student_by_id(0)
-            expect(student).to be_nil
+            expect(student).to be_a_kind_of Exception
+            expect(student).to have_attributes http_code: 404
         end
     end
 
@@ -57,7 +58,8 @@ describe Appolo do
     context 'Invalid id' do
         it 'should return nil when the id is not valid' do
           teacher = Appolo.get_teacher_by_id -1
-          expect(teacher).to be_nil
+          expect(teacher).to be_a_kind_of Exception
+          expect(teacher).to have_attributes http_code: 404
         end
     end
   end
@@ -74,7 +76,7 @@ describe Appolo do
   describe '.get_class_by_id(id)' do
     context 'Valid id' do
       it 'must return an object like this' do
-        class_temp = Appolo.get_class_by_id '387'
+        class_temp = Appolo.get_class_by_id 387
         expect(class_temp).to have_attributes id: 387, full_name: 'AED / 1415v / LI31N', course_unit_short_name: 'AED'
         expect(class_temp).to have_attributes short_name: 'LI31N', course_unit_id: 38
 
@@ -84,9 +86,10 @@ describe Appolo do
     end
 
     context 'Invalid ID' do
-      it 'must return nil when the id is not valid' do
+      it 'must return exception when the id is not valid' do
         class_temp = Appolo.get_class_by_id 1010
-        expect(class_temp).to be_nil
+        expect(class_temp).to be_a_kind_of Exception
+        expect(class_temp).to have_attributes http_code: 404
       end
     end
   end
@@ -100,11 +103,21 @@ describe Appolo do
   end
 
   describe '.get_program_by_id(id)' do
-    it 'should return an object like this' do
-      single_program = Appolo.get_program_by_id 1
-      expect(single_program).to have_attributes id: 1, short_name: 'LEIC'
-      expect(single_program.links).to be_a_kind_of(Links)
-      expect(single_program.course_units).to be_a_kind_of(Array)
+    context 'Valid id' do
+      it 'should return an object like this' do
+        single_program = Appolo.get_program_by_id 1
+        expect(single_program).to have_attributes id: 1, short_name: 'LEIC'
+        expect(single_program.links).to be_a_kind_of(Links)
+        expect(single_program.course_units).to be_a_kind_of(Array)
+      end
+    end
+
+    context 'Invalid id' do
+      it 'must return exception when the id is not valid' do
+        prog = Appolo.get_program_by_id -1
+        expect(prog).to be_a_kind_of Exception
+        expect(prog).to have_attributes http_code: 404
+      end
     end
   end
 

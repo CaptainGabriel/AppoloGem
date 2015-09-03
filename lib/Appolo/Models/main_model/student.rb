@@ -12,7 +12,11 @@ class Student < Element
   attr_reader :number, :name, :academic_email, :github_username
   attr_reader :avatar_url, :program, :students
 
-  def initialize(json_str)
+  def initialize(json_str = nil)
+    if json_str.nil?
+      return
+    end
+
     json_data = Appolo.check_json_info json_str
 
     super(json_data[ModelUtils::ID],

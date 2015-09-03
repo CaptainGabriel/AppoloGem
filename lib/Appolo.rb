@@ -6,7 +6,7 @@ require_relative '../lib/Appolo/Models/main_model/classes'
 require_relative '../lib/Appolo/Models/main_model/program'
 require_relative '../lib/Appolo/Models/main_model/courses'
 require_relative '../lib/Appolo/Models/main_model/lective_semester'
-
+require_relative '../lib/Appolo/Models/result'
 require 'json'
 
 ##
@@ -52,6 +52,11 @@ module Appolo
     end
   end
 
+  def self.build_result(result,error)
+    Result.new(result, error)
+  end
+
+
   public
 
   ##
@@ -69,7 +74,7 @@ module Appolo
       end
       $all_students
     rescue => e
-      nil #TODO - exceptions
+      $all_students
     end
   end
 
@@ -89,7 +94,7 @@ module Appolo
       end
       $all_teachers
     rescue => e
-      nil
+      $all_teachers
     end
   end
 
@@ -109,7 +114,7 @@ module Appolo
       end
       $all_programs
     rescue => e
-      nil
+      $all_programs
     end
   end
 
@@ -129,7 +134,7 @@ module Appolo
       end
       $all_courses
     rescue => e
-      nil
+      $all_courses
     end
   end
 
@@ -149,7 +154,7 @@ module Appolo
       end
       $all_lective_sem
     rescue => e
-      nil
+      $all_lective_sem
     end
   end
 
@@ -169,7 +174,7 @@ module Appolo
       end
       $all_classes
     rescue => e
-      nil
+      $all_classes
     end
   end
 
@@ -177,12 +182,12 @@ module Appolo
   # Return a single instance of Teacher based upon the +id+ given.
 
   def self.get_teacher_by_id(id)
-    return $all_teachers[id] unless $all_teachers.count == 0
+    #return $all_teachers[id] unless $all_teachers.count == 0
     begin
       response = RestClient.get TEACHERS_API_LINK + id.to_s
       Teacher.new(verify_response response)
     rescue => e
-      nil
+      e
     end
   end
 
@@ -191,12 +196,12 @@ module Appolo
   # Return a single instance of Classes based upon the +id+ given.
 
   def self.get_class_by_id(id)
-    return $all_classes[id] unless $all_classes.count == 0
+    #return $all_classes[id] unless $all_classes.count == 0
     begin
       response = RestClient.get CLASSES_API_LINK + id.to_s
       Classes.new(verify_response response)
     rescue => e
-      nil
+     e
     end
   end
 
@@ -204,22 +209,25 @@ module Appolo
   # Return a single instance of Student based upon the +id+ given.
 
   def self.get_student_by_id(id)
-    return $all_students[id] unless $all_students.count == 0
+    #return $all_students[id] unless $all_students.count == 0
     begin
       response = RestClient.get STUDENTS_API_LINK + id.to_s
       Student.new(verify_response response)
     rescue => e
-      nil
+      e
     end
   end
 
+  ##
+  # Return a single instance of program based upon the +id+ given.
+
   def self.get_program_by_id(id)
-    return $all_programs[id] unless $all_programs.count == 0
+    #return $all_programs[id] unless $all_programs.count == 0
     begin
       response = RestClient.get PROGRAMS_API_LINK + id.to_s
       Program.new(verify_response response)
     rescue => e
-      nil
+      e
     end
   end
 
