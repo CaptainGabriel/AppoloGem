@@ -26,11 +26,24 @@ Or install it yourself as:
 
 ## Usage
 
+In order to specify which element to get, you can use one of the following
+symbols:
+
+* :classes
+* :students
+* :programs
+* :courses
+* :lec_semesters
+* :teachers
+
+Take a look at the tests for more info.
+
+
 The following line of code
 
 ```ruby
 
-puts Appolo::get_student_by_id 38209
+puts Appolo::get_element_by_id(:students,38209)
 
 ```
 
@@ -47,7 +60,7 @@ afterwards all the lectures that were given there like this:
 
 ```ruby
 
-some_class = Appolo.get_class_by_id 409
+some_class = Appolo.get_element_by_id(:classes, 409)
 all_lectures_now = some_class.lectures
 
 puts all_lectures[0].title
@@ -63,7 +76,7 @@ To get all the students participating in a certain class:
 
 ```ruby
 
-some_class = Appolo.get_class_by_id 409
+some_class = .get_element_by_id(:classes, 409)
 participants = some_class.participants
 
 puts participants[0].name
@@ -76,7 +89,7 @@ For more information, just grab the id and get the specific student
 ```ruby
 
 id = participants[0].id
-student = Appolo.get_student_by_id id
+student = .get_element_by_id(:students, id)
 puts student.short_name
 # Humberto Silva
 
