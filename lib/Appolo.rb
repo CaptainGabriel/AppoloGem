@@ -11,18 +11,11 @@ require 'json'
 
 ##
 # This module is the main provider for the public API that
-# this gem contains.
+# this gem provides.
 
 module Appolo
 
   private
-
-  COURSES_API_CODENAME = 'courseUnits'
-  TEACHERS_API_CODENAME = 'teachers'
-  STUDENTS_API_CODENAME = 'students'
-  CLASSES_API_CODENAME =  'classes'
-  PROGRAMS_API_CODENAME = 'programs'
-  LECTIVESEM_API_CODENAME = 'lectiveSemesters'
 
   $all_students = Hash.new
   $all_teachers = Hash.new
@@ -31,16 +24,45 @@ module Appolo
   $all_courses = Hash.new
   $all_lective_sem = Hash.new
 
-  #main API links
-  TEACHERS_API_LINK = 'https://adeetc.thothapp.com/api/v1/teachers/'
-  STUDENTS_API_LINK = 'https://adeetc.thothapp.com/api/v1/students/'
-  CLASSES_API_LINK = 'https://adeetc.thothapp.com/api/v1/classes/'
-  PROGRAMS_API_LINK = 'https://adeetc.thothapp.com/api/v1/programs/'
-  COURSES_API_LINK = 'https://adeetc.thothapp.com/api/v1/courseunits/'
-  LECTIVE_SEMESTERS_API_LINK = 'https://adeetc.thothapp.com/api/v1/lectivesemesters'
+  ##
+  # This hash contains each hash structure that contains the different
+  # elements after being requested by the method Appolo#get_set_of_elements
+  Elements = {
+      :students => $all_students,
+      :teachers => $all_teachers,
+      :classes => $all_classes,
+      :programs => $all_programs,
+      :courses => $all_courses,
+      :lec_semesters => $all_lective_sem
+  }
 
-  #TODO should raise exception when not 200
+  ##
+  # This hash structure contains the main web links in order to perform
+  # and build future http requests. This set of links are based upon the
+  # Thoth WebApp REST API.
+  # ---
+  # Check https://adeetc.thothapp.com/api/doc for more info.
+  Api_Links = {
+      :students => 'https://adeetc.thothapp.com/api/v1/students/',
+      :teachers => 'https://adeetc.thothapp.com/api/v1/teachers/',
+      :classes  => 'https://adeetc.thothapp.com/api/v1/classes/',
+      :programs => 'https://adeetc.thothapp.com/api/v1/programs/',
+      :courses  => 'https://adeetc.thothapp.com/api/v1/courseunits/',
+      :lec_semesters => 'https://adeetc.thothapp.com/api/v1/lectivesemesters'
+
+  }
+
+  Api_Codename = {
+      :students => 'students',
+      :teachers => 'teachers',
+      :classes  => 'classes',
+      :programs => 'programs',
+      :courses  => 'courseUnits',
+      :lec_semesters => 'lectiveSemesters'
+  }
+
   def self.verify_response(resp)
+    #I dont like this nil..
     (resp.code == 200) ? resp : nil
   end
 
@@ -56,176 +78,48 @@ module Appolo
     Result.new(result, error)
   end
 
+  Builder_Elements = {
+      students: lambda{|students| students.each{|student| stub , $all_students[stub.id] = Student.new(student), stub}},
+      teachers: lambda{|teachers| teachers.each{|teacher| stub, $all_teachers[stub.id] = Teacher.new(teacher), stub }},
+      classes: lambda{|classes| classes.each{|classe| stub, $all_classes[stub.id] = Classes.new(classe), stub}},
+      programs: lambda{|programs| programs.each{|program| stub, $all_programs[stub.id] = Program.new(program), stub}},
+      courses: lambda{|courses| courses.each{|course| stub, $all_courses[stub.id] = CourseUnit.new(course), stub}},
+      lec_semesters: lambda{|semesters| semesters.each{|lec_sem| stub, $all_lective_sem[stub.id] = LectiveSemester.new(lec_sem), stub}}
+  }
+
+  Builder_Element = {
+      students: lambda{|data| Student.new(verify_response data)},
+      teachers: lambda{|data| Teacher.new(verify_response data)},
+      classes: lambda{|data| Classes.new(verify_response data)},
+      programs: lambda{|data| Program.new(verify_response data)},
+      courses: lambda{|data| CourseUnit.new(verify_response data)},
+      lec_semesters: lambda{|data| LectiveSemester.new(verify_response data)}
+  }
 
   public
 
   ##
-  #Returns an array of Student instances based upon the main API link.
-  
-  def self.get_students
-    return $all_students unless $all_students.length == 0
+  #
+
+  def self.get_set_of_elements(element_name)
+    return Elements[element_name] unless Elements[element_name].length == 0
     begin
-      response = RestClient.get STUDENTS_API_LINK
+      response = RestClient.get Api_Links[element_name]
       valid_resp = verify_response response
-      students_temp = JSON.parse(valid_resp)[STUDENTS_API_CODENAME]
-      students_temp.each do |student|
-        stub = Student.new(student)
-        $all_students[stub.id] = stub
-      end
-      $all_students
+      element_api_codename = Api_Codename[element_name]
+      set_of_elements = JSON.parse(valid_resp)
+      set_of_elements = set_of_elements[element_api_codename]
+      Builder_Elements[element_name].call(set_of_elements)
+      Elements[element_name]
     rescue => e
-      $all_students
+      Elements[element_name]
     end
   end
 
-  
-  ##
-  #Returns an array of Teacher instances based upon the main API link.
-    
-  def self.get_teachers
-    return $all_teachers unless $all_teachers.length == 0
+  def self.get_element_by_id(element_name, id)
     begin
-      response = RestClient.get TEACHERS_API_LINK
-      valid_response = verify_response response
-      teachers_temp = JSON.parse(valid_response)[TEACHERS_API_CODENAME]
-      teachers_temp.each do |teacher|
-        stub = Teacher.new(teacher)
-        $all_teachers[stub.id] = stub
-      end
-      $all_teachers
-    rescue => e
-      $all_teachers
-    end
-  end
-
-
-  ##
-  # Returns an array of Program instances based upon the main API link.
-  
-  def self.get_programs
-    return $all_programs unless $all_programs.length == 0
-    begin
-      response = RestClient.get PROGRAMS_API_LINK
-      valid_resp = verify_response response
-      programs_temp = JSON.parse(valid_resp)[PROGRAMS_API_CODENAME]
-      programs_temp.each do |program|
-        stub = Program.new program
-        $all_programs[stub.id] = stub
-      end
-      $all_programs
-    rescue => e
-      $all_programs
-    end
-  end
-
-
-  ##
-  # Returns an array of CourseUnit instances based upon the main API link.
-
-  def self.get_courses
-    return $all_courses unless $all_courses.length == 0
-    begin
-      response = RestClient.get COURSES_API_LINK
-      valid_resp = verify_response response #debug
-      courses_temp = JSON.parse(valid_resp)[COURSES_API_CODENAME]
-      courses_temp.each do |course|
-        stub = CourseUnit.new course
-        $all_courses[stub.id] = stub
-      end
-      $all_courses
-    rescue => e
-      $all_courses
-    end
-  end
-
-
-  ##
-  # Returns an array of LectiveSemester instances based upon the main API link.
-
-  def self.get_lective_semesters
-    return $all_lective_sem unless $all_lective_sem.length == 0
-    begin
-      response = RestClient.get LECTIVE_SEMESTERS_API_LINK
-      valid_resp = verify_response response
-      lective_temp = JSON.parse(valid_resp)[LECTIVESEM_API_CODENAME]
-      lective_temp.each do |lec_sem|
-        stub = LectiveSemester.new lec_sem
-        $all_lective_sem[stub.id] = stub
-      end
-      $all_lective_sem
-    rescue => e
-      $all_lective_sem
-    end
-  end
-
-
-  ##
-  # Returns an array of Classes instances based upon the main API link.
-
-  def self.get_classes
-    return $all_classes unless $all_classes.length == 0
-    begin
-      response = RestClient.get CLASSES_API_LINK
-      valid_resp = verify_response response
-      classes_temp = JSON.parse(valid_resp)[CLASSES_API_CODENAME]
-      classes_temp.each do |classe|
-        stub = Classes.new classe
-        $all_classes[stub.id] = stub
-      end
-      $all_classes
-    rescue => e
-      $all_classes
-    end
-  end
-
-  ##
-  # Return a single instance of Teacher based upon the +id+ given.
-
-  def self.get_teacher_by_id(id)
-    #return $all_teachers[id] unless $all_teachers.count == 0
-    begin
-      response = RestClient.get TEACHERS_API_LINK + id.to_s
-      Teacher.new(verify_response response)
-    rescue => e
-      e
-    end
-  end
-
-  
-  ##
-  # Return a single instance of Classes based upon the +id+ given.
-
-  def self.get_class_by_id(id)
-    #return $all_classes[id] unless $all_classes.count == 0
-    begin
-      response = RestClient.get CLASSES_API_LINK + id.to_s
-      Classes.new(verify_response response)
-    rescue => e
-     e
-    end
-  end
-
-  ##
-  # Return a single instance of Student based upon the +id+ given.
-
-  def self.get_student_by_id(id)
-    #return $all_students[id] unless $all_students.count == 0
-    begin
-      response = RestClient.get STUDENTS_API_LINK + id.to_s
-      Student.new(verify_response response)
-    rescue => e
-      e
-    end
-  end
-
-  ##
-  # Return a single instance of program based upon the +id+ given.
-
-  def self.get_program_by_id(id)
-    #return $all_programs[id] unless $all_programs.count == 0
-    begin
-      response = RestClient.get PROGRAMS_API_LINK + id.to_s
-      Program.new(verify_response response)
+      response = RestClient.get Api_Links[element_name] + id.to_s
+      Builder_Element[element_name].call(response)
     rescue => e
       e
     end
