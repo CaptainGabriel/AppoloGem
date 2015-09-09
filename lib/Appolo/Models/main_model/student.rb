@@ -17,7 +17,7 @@ class Student < Element
       return
     end
 
-    json_data = Appolo.check_json_info json_str
+    json_data = check_json_info json_str
 
     super(json_data[ModelUtils::ID],
           json_data[ModelUtils::SHORT_NAME],

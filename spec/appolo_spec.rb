@@ -2,51 +2,69 @@ require 'spec_helper'
 
 describe Appolo do
 
-  describe '.get_students()' do
+  describe 'getting all students' do
     it 'should return an Hash (id,object) with all students'  do
       students = Appolo.get_set_of_elements(:students)
       expect(students).to be_a_kind_of Hash
       expect(students.count).to be > 0
+      students.values.each do |val|
+        expect(val).to_not be_nil
+      end
     end
   end
 
-  describe '.get_teachers()' do
+  describe 'getting all teachers' do
     it 'should return an Hash (id,object) with all the teachers' do
       teachers = Appolo.get_set_of_elements(:teachers)
       expect(teachers).to be_a_kind_of(Hash)
       expect(teachers.count).to be >0
+      teachers.values.each do |val|
+        expect(val).to_not be_nil
+      end
     end
   end
 
-  describe '.get_classes()' do
+  describe 'getting all classes' do
     it 'should return an Hash (id,object) with all the teachers' do
       classes = Appolo.get_set_of_elements(:classes)
       expect(classes).to be_a_kind_of Hash
       expect(classes.count).to be >0
+      classes.values.each do |val|
+        expect(val).to_not be_nil
+      end
     end
   end
 
-  describe '.get_programs()' do
+  describe 'getting all programs' do
     it 'should return an Hash (id,object) with all the programs' do
       programs = Appolo.get_set_of_elements(:programs)
       expect(programs).to be_a_kind_of Hash
       expect(programs.count).to be >0
+      programs.values.each do |val|
+        expect(val).to_not be_nil
+      end
     end
   end
 
-  describe '.get_courses()' do
+  describe 'getting all courses' do
     it 'should return an Hash (id,object) with all the courses' do
       courses = Appolo.get_set_of_elements(:courses)
       expect(courses).to be_a_kind_of Hash
       expect(courses.count).to be >0
+      courses.values.each do |val|
+        expect(val).to_not be_nil
+      end
     end
   end
 
-  describe '.get_lective_semesters()' do
+  describe 'getting all semesters' do
     it 'should return an Hash (id,object) with all the lective semesters' do
       lective_sem = Appolo.get_set_of_elements(:lec_semesters)
       expect(lective_sem).to be_a_kind_of Hash
       expect(lective_sem.count).to be >0
+      lective_sem.values.each do |val|
+        expect(val).to_not be_nil
+      end
     end
   end
 

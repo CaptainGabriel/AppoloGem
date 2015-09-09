@@ -1,5 +1,6 @@
 require 'json'
 require 'rest-client'
+require 'parallel'
 require_relative '../model_utils'
 require_relative '../secondary/links'
 require_relative '../secondary/avatar_url'
@@ -19,7 +20,7 @@ class Classes < Element
   # Initiate an instance of Classes based upon +json_info*
   # that can be an hash or a JSON string.
   def initialize(json_info)
-    json_data = ModelUtils::check_json_info json_info
+    json_data = check_json_info json_info
 
     super(json_data[ModelUtils::ID], 
           json_data[ModelUtils::CLASS_NAME], 
@@ -69,9 +70,9 @@ class Classes < Element
     response_all_lectures = RestClient.get @links.lectures
     all_lectures = JSON.parse response_all_lectures
     temp = []
-    all_lectures['classLectures'].each do |lecture|
-      temp.push Lecture.new lecture
-    end
+    temp = Parallel.each(all_lectures['classLectures'], :in_processes => 1){
+        |lecture| temp.push Lecture.new lecture
+    }
     temp
   end
 
@@ -81,9 +82,9 @@ class Classes < Element
     response_all_resources = RestClient.get @links.resources
     all_resources = JSON.parse response_all_resources
     temp = []
-    all_resources['classResources'].each do |resource|
-      temp.push Resource.new resource
-    end
+    temp = Parallel.each(all_resources['classResources'], :in_processes => 1){
+      |resource| temp.push Resource.new resource
+    }
     temp
   end
 

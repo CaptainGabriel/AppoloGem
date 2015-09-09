@@ -8,11 +8,14 @@ class CourseUnit < Element
   attr_reader :name, :programs
 
   def initialize(json_info)
-    super(json_info[ModelUtils::ID],
-          json_info[ModelUtils::SHORT_NAME],
-          json_info[ModelUtils::LINKS],
+
+    json_data = check_json_info json_info
+
+    super(json_data[ModelUtils::ID],
+          json_data[ModelUtils::SHORT_NAME],
+          json_data[ModelUtils::LINKS],
           @@type_of_links)
-    @name = json_info[ModelUtils::NAME]
+    @name = json_data[ModelUtils::NAME]
 
     #@programs = TODO
   end

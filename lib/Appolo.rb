@@ -26,7 +26,7 @@ module Appolo
 
   ##
   # This hash contains each hash structure that contains the different
-  # elements after being requested by the method Appolo#get_set_of_elements
+  # elements after being requested by the method Appolo#get_set_of_elements.
   Elements = {
       :students => $all_students,
       :teachers => $all_teachers,
@@ -49,8 +49,13 @@ module Appolo
       :programs => 'https://adeetc.thothapp.com/api/v1/programs/',
       :courses  => 'https://adeetc.thothapp.com/api/v1/courseunits/',
       :lec_semesters => 'https://adeetc.thothapp.com/api/v1/lectivesemesters'
-
   }
+
+  ##
+  # In order to build the hash of Link objects,
+  # each class must have a codename to append later
+  # during the construction. Since I dont believe in
+  # magical strings, I've putted all of those in here.
 
   Api_Codename = {
       :students => 'students',
@@ -78,14 +83,61 @@ module Appolo
     Result.new(result, error)
   end
 
+  ##
+  # This hash contains the procs that build and populate the hashes
+  # that contain all the objects from the last made request.
+  # So, when we request all the students, the proc related to the symbol
+  # ":student" will be used to create the instances and insert them into the hash.
+
   Builder_Elements = {
-      students: lambda{|students| students.each{|student| stub , $all_students[stub.id] = Student.new(student), stub}},
-      teachers: lambda{|teachers| teachers.each{|teacher| stub, $all_teachers[stub.id] = Teacher.new(teacher), stub }},
-      classes: lambda{|classes| classes.each{|classe| stub, $all_classes[stub.id] = Classes.new(classe), stub}},
-      programs: lambda{|programs| programs.each{|program| stub, $all_programs[stub.id] = Program.new(program), stub}},
-      courses: lambda{|courses| courses.each{|course| stub, $all_courses[stub.id] = CourseUnit.new(course), stub}},
-      lec_semesters: lambda{|semesters| semesters.each{|lec_sem| stub, $all_lective_sem[stub.id] = LectiveSemester.new(lec_sem), stub}}
+      students: lambda{
+          |students| students.each_with_index {
+            |student, idx|
+              stub = Student.new(student)
+              $all_students[idx] = stub
+            }
+      },
+      teachers: lambda{
+          |teachers| teachers.each_with_index {
+            |teacher, idx|
+              stub = Teacher.new(teacher)
+              $all_teachers[idx] =stub
+          }
+      },
+      classes: lambda{
+          |classes| classes.each_with_index{
+            |classe, idx|
+              stub = Classes.new(classe)
+              $all_classes[idx] = stub
+          }
+      },
+      programs: lambda{
+          |programs| programs.each_with_index{
+            |program, idx|
+              stub = Program.new(program)
+              $all_programs[idx] = stub
+          }
+      },
+      courses: lambda{
+          |courses| courses.each_with_index{
+            |course, idx|
+              stub = CourseUnit.new(course)
+              $all_courses[idx] = stub
+          }
+      },
+      lec_semesters: lambda{
+          |semesters| semesters.each_with_index{
+            |lec_sem, idx|
+              stub = LectiveSemester.new(lec_sem)
+              $all_lective_sem[idx] = stub
+          }
+      }
   }
+
+  ##
+  # This hash acts the same as Builder_Elements but instead of creating
+  # a set of elements, it creates only one since its purpose is to be used
+  # when the method Appolo#get_element_by_id is called.
 
   Builder_Element = {
       students: lambda{|data| Student.new(verify_response data)},
@@ -99,7 +151,14 @@ module Appolo
   public
 
   ##
-  #
+  # Call this method in order to get an array of elements.
+  # To specify which element to search you must specify +element_name+ as:
+  # * :students -> Set of Students
+  # * :teachers -> Set of Teachers
+  # * :classes  -> Set of Classes
+  # * :programs -> Set of Programs
+  # * :courses  -> Set of Courses
+  # * :lec_semesters -> Set of Lective Semesters
 
   def self.get_set_of_elements(element_name)
     return Elements[element_name] unless Elements[element_name].length == 0
@@ -115,6 +174,19 @@ module Appolo
       Elements[element_name]
     end
   end
+
+  ##
+  # Call this method in order to get a single element.
+  # To specify which element to search you must specify +element_name+ as:
+  # * :students -> Set of Students
+  # * :teachers -> Set of Teachers
+  # * :classes  -> Set of Classes
+  # * :programs -> Set of Programs
+  # * :courses  -> Set of Courses
+  # * :lec_semesters -> Set of Lective Semesters
+  #
+  # The +id+ specifies the *id* related to the element inside the Thoth API.
+  # _This gem is not responsible for the numbers used._
 
   def self.get_element_by_id(element_name, id)
     begin

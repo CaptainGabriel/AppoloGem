@@ -26,6 +26,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'rest-client', '~> 1.8', '>= 1.8.0'
   spec.add_development_dependency 'json', '~> 1.8', '>= 1.8.3'
-
+  spec.add_development_dependency 'parallel', '~> 1.6.1'
 
 end

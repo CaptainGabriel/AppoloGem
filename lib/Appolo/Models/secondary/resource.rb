@@ -1,19 +1,23 @@
 require_relative 'links'
 require_relative '../model_utils'
 
-class Resource
+class Resource < Element
 
-  attr_reader :id, :description, :class_id, :title
-  attr_reader :links
+  @@type_of_links = 'resources'
+
+  attr_reader :description, :class_id, :title
 
   def initialize(json_str)
-    json_data = ModelUtils::check_json_info json_str
-    
-    @id = json_data[ModelUtils::ID]
+    json_data = check_json_info json_str
+
+    super(json_data[ModelUtils::ID],
+          nil,
+          json_data[ModelUtils::LINKS],
+          @@type_of_links)
+
     @description = json_data[ModelUtils::DESCRIPTION]
     @class_id = json_data[ModelUtils::CLASS_ID]
     @title = json_data[ModelUtils::TITLE]
-    @links = Links.new json_data[ModelUtils::LINKS], 'resources'
   end
 
   def to_s

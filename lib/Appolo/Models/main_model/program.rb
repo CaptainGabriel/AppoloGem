@@ -9,7 +9,8 @@ class Program < Element
   @@type_for_links = 'programs'
 
   def initialize(data)
-    json_data = ModelUtils::check_json_info data
+    json_data = check_json_info data
+
 
     super(json_data[ModelUtils::ID],
           json_data[ModelUtils::SHORT_NAME],

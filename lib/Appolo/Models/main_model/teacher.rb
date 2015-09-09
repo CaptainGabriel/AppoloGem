@@ -11,7 +11,7 @@ class Teacher < Element
 
 
   def initialize(json_info)
-    json_data = Appolo.check_json_info json_info
+    json_data = check_json_info json_info
 
     super(json_data[ModelUtils::ID],
           json_data[ModelUtils::SHORT_NAME],
@@ -23,7 +23,6 @@ class Teacher < Element
     @academic_email = json_data[ModelUtils::ACADEMIC_EMAIL]
     @avatar_url = AvatarUrl.new(json_data[ModelUtils::AVATAR_URL])
   end
-
 
   def to_s
     "#{@id} - #{@short_name} : #{@academic_email}"

@@ -9,7 +9,7 @@ class LectiveSemester < Element
   @@type_of_links = 'lectiveSemesters'
 
   def initialize(json_str)
-    json_data = ModelUtils.check_json_info json_str
+    json_data = check_json_info json_str
 
     super(json_data[ModelUtils::LECTIVE_ID],
           json_data[ModelUtils::SHORT_NAME],
