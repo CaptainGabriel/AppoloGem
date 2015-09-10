@@ -15,7 +15,7 @@ class CourseUnit < Element
           json_data[ModelUtils::SHORT_NAME],
           json_data[ModelUtils::LINKS],
           @@type_of_links)
-    @name = json_data[ModelUtils::NAME]
+    @name = json_data[ModelUtils::FULL_NAME] || json_data[ModelUtils::NAME]
 
     #@programs = TODO
   end
