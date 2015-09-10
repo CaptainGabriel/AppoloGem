@@ -4,7 +4,7 @@ require_relative 'courses'
 
 class Program < Element
 
-  attr_reader :full_name, :course_units
+  attr_reader :name, :course_units
 
   @@type_for_links = 'programs'
 
@@ -17,7 +17,7 @@ class Program < Element
           json_data[ModelUtils::LINKS],
           @@type_for_links)
 
-    @full_name = (json_data[ModelUtils::FULL_NAME] || json_data[ModelUtils::NAME])
+    @name = (json_data[ModelUtils::FULL_NAME] || json_data[ModelUtils::NAME])
 
     @course_units = get_course_units json_data[ModelUtils::COURSE_UNIT]
   end
