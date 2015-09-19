@@ -9,6 +9,7 @@ describe 'Classes behavior' do
       participants = class_temp.participants
       expect(participants).to be_a_kind_of(Array)
       expect(participants.count).to be >0
+      participants.each { |part| expect(part).to be_a_kind_of Student }
     end
   end
 
@@ -18,25 +19,17 @@ describe 'Classes behavior' do
       lectures = gamboas_class.lectures
       expect(lectures).to be_a_kind_of Array
       expect(lectures.count).to be >0
+      lectures.each { |lec| expect(lec).to be_a_kind_of Lecture }
     end
   end
-
-  context 'getting an instance of Lecture' do
-    it 'should behave like this' do
-      gamboas_class = Appolo.get_element_by_id(:classes, 409)
-      lectures = gamboas_class.lectures
-      lectureOne = lectures[0]
-      expect(lectureOne.id).to eq 7171
-      expect(lectureOne.title).to eq 'Aula 01 Introdução às  VMs processo e comparação .Net vs JVM'
-    end
-  end
-
+  
   context 'getting all resources with #resources' do
     it 'should return an array of Resource instances' do
       gamboas_class = Appolo.get_element_by_id(:classes, 409)
       resources = gamboas_class.resources
       expect(resources).to be_a_kind_of Array
       expect(resources.count).to be >0
+      resources.each { |res| expect(res).to be_a_kind_of Resource }
     end
   end
 

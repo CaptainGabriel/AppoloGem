@@ -1,6 +1,6 @@
 require 'json'
 require 'rest-client'
-require 'parallel'
+
 require_relative '../model_utils'
 require_relative '../secondary/links'
 require_relative '../secondary/avatar_url'
@@ -59,8 +59,11 @@ class Classes < Element
     all_participants = JSON.parse response_all_participants
     temp = []
     all_participants['students'].each do |participant|
-      temp.push Student.new participant
+      temp.push(Student.new(participant))
     end
+    #temp = Parallel.each(all_participants['students'], :in_processes => 1){
+    #    |participant|  temp.push(Student.new(participant))
+    #}
     temp
   end
 
@@ -70,9 +73,14 @@ class Classes < Element
     response_all_lectures = RestClient.get @links.lectures
     all_lectures = JSON.parse response_all_lectures
     temp = []
-    temp = Parallel.each(all_lectures['classLectures'], :in_processes => 1){
-        |lecture| temp.push Lecture.new lecture
-    }
+    all_lectures['classLectures'].each do |lecture|
+      temp.push(Lecture.new(lecture))
+    end
+
+    #Parallel.each(all_lectures['classLectures'], :in_processes => 1){
+    #    |lecture| temp.push(Lecture.new(lecture))
+    #}
+
     temp
   end
 
@@ -81,10 +89,15 @@ class Classes < Element
   def resources
     response_all_resources = RestClient.get @links.resources
     all_resources = JSON.parse response_all_resources
-    temp = []
-    temp = Parallel.each(all_resources['classResources'], :in_processes => 1){
-      |resource| temp.push Resource.new resource
-    }
+    temp = Array.new
+    all_resources['classResources'].each do |resource|
+      temp.push(Resource.new(resource))
+    end
+
+    #Parallel.each(all_resources['classResources'], :in_processes => 1){
+    #  |resource| temp <<  Resource.new(resource)
+    #}
+
     temp
   end
 

@@ -153,4 +153,13 @@ describe Appolo do
     end
   end
 
+  describe 'get a single lective semester by id' do
+    context 'valid id' do
+      it 'should return an object like this'do
+        single_semester = Appolo.get_element_by_id(:lec_semesters, 4)
+        expect(single_semester).to have_attributes id: 4, short_name: '1011v', start_year: 2010, term: 2
+      end
+    end
+  end
+
 end

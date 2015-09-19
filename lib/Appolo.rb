@@ -48,7 +48,7 @@ module Appolo
       :classes  => 'https://adeetc.thothapp.com/api/v1/classes/',
       :programs => 'https://adeetc.thothapp.com/api/v1/programs/',
       :courses  => 'https://adeetc.thothapp.com/api/v1/courseunits/',
-      :lec_semesters => 'https://adeetc.thothapp.com/api/v1/lectivesemesters'
+      :lec_semesters => 'https://adeetc.thothapp.com/api/v1/lectivesemesters/'
   }
 
   ##
