@@ -33,4 +33,16 @@ describe 'Classes behavior' do
     end
   end
 
+  context 'getting all groups with #groups' do
+    it 'should return an array of Group instances' do
+      #https://adeetc.thothapp.com/api/v1/classes/437/groups
+      pp_class = Appolo.get_element_by_id(:classes, 437)
+      groups_array = pp_class.groups
+      expect(groups_array).to be_a_kind_of Array
+      expect(groups_array.count).to be >0
+      groups_array.each { |g| expect(g).to be_a_kind_of Group }
+    end
+  end
+
+
 end

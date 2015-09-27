@@ -61,9 +61,7 @@ class Classes < Element
     all_participants['students'].each do |participant|
       temp.push(Student.new(participant))
     end
-    #temp = Parallel.each(all_participants['students'], :in_processes => 1){
-    #    |participant|  temp.push(Student.new(participant))
-    #}
+
     temp
   end
 
@@ -76,10 +74,6 @@ class Classes < Element
     all_lectures['classLectures'].each do |lecture|
       temp.push(Lecture.new(lecture))
     end
-
-    #Parallel.each(all_lectures['classLectures'], :in_processes => 1){
-    #    |lecture| temp.push(Lecture.new(lecture))
-    #}
 
     temp
   end
@@ -94,11 +88,13 @@ class Classes < Element
       temp.push(Resource.new(resource))
     end
 
-    #Parallel.each(all_resources['classResources'], :in_processes => 1){
-    #  |resource| temp <<  Resource.new(resource)
-    #}
-
     temp
+  end
+
+  ##
+  # Returns all the groups belonging to a certain class.
+  def groups
+
   end
 
 end

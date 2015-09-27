@@ -47,6 +47,11 @@ module ModelUtils
   TITLE = 'title'
   DESCRIPTION = 'description'
 
+  # Group vars
+  NUM = 'num'
+  LOCKED = 'locked'
+  STATE = 'state'
+  ENROLLMENTS = 'enrollments'
 
 
 end
