@@ -1,6 +1,7 @@
 require_relative '../model_utils'
+require_relative '../element'
 
-class Group
+class Group < Element
 
   @@type_for_links = 'groups'
 

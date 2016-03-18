@@ -6,6 +6,7 @@ require_relative '../secondary/links'
 require_relative '../secondary/avatar_url'
 require_relative '../secondary/lecture'
 require_relative '../secondary/resource'
+require_relative '../secondary/group'
 require_relative 'program'
 require_relative '../element'
 
@@ -55,46 +56,34 @@ class Classes < Element
   ##
   # Returns all the students related to this class.
   def participants
-    response_all_participants = RestClient.get @links.participants
-    all_participants = JSON.parse response_all_participants
-    temp = []
-    all_participants['students'].each do |participant|
-      temp.push(Student.new(participant))
-    end
-
-    temp
+    req_resource(RestClient.get(@links.participants), 'students', Student)
   end
 
   ##
   # Returns all the lectures related to this class.
   def lectures
-    response_all_lectures = RestClient.get @links.lectures
-    all_lectures = JSON.parse response_all_lectures
-    temp = []
-    all_lectures['classLectures'].each do |lecture|
-      temp.push(Lecture.new(lecture))
-    end
-
-    temp
+    req_resource(RestClient.get(@links.lectures), 'classLectures', Lecture)
   end
 
   ##
   # Returns all the resources related to a certain class.
   def resources
-    response_all_resources = RestClient.get @links.resources
-    all_resources = JSON.parse response_all_resources
-    temp = Array.new
-    all_resources['classResources'].each do |resource|
-      temp.push(Resource.new(resource))
-    end
-
-    temp
+    req_resource(RestClient.get(@links.resources), 'classResources', Resource)
   end
 
   ##
   # Returns all the groups belonging to a certain class.
   def groups
+    req_resource(RestClient.get(@links.groups), 'groups', Group)
+  end
 
+  def req_resource(raw_content, hash_id, model_class)
+    all_resources = JSON.parse raw_content
+    temp = Array.new
+    all_resources[hash_id].each do |resource|
+      temp.push(model_class.new(resource))
+    end
+    temp
   end
 
 end
